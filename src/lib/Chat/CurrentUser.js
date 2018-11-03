@@ -57,12 +57,14 @@ export default class CurrentUser extends User {
     }
   }
 
-  sendMessage (messageText, receiverId) {
+  sendMessage (body, receiverId) {
     const data = {
-      body: messageText,
+      body,
       receiverId
     }
-    this.socket.emit('chat message', data)
+    return new Promise(resolve => {
+      this.socket.emit('chat message', data, resolve)
+    })
   }
 
   getContacts () {
@@ -80,7 +82,6 @@ export default class CurrentUser extends User {
         'Authorization': `Bearer ${this.data.jwt}`
       },
     })
-      .then(userData => new User(userData))
       .then(user => {
         if (!this.data.contacts) {
           this.data.contacts = []
@@ -134,9 +135,7 @@ export default class CurrentUser extends User {
 
   getLastSeen (userId) {
     return new Promise(resolve => {
-      this.socket.emit('getLastSeen', userId, lastSeen => {
-        resolve(lastSeen)
-      });
+      this.socket.emit('getLastSeen', userId, resolve);
     });
   }
 }

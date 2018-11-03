@@ -3,11 +3,11 @@
 .app__contacts {
   @extend .p, .shadowed;
 
+  display: flex;
   margin-right: 2 * $gutter;
   border-radius: $border-radius;
   width: 300px;
   background-color: $white;
-  overflow-y: hidden;
   font-size: .9rem;
   flex-direction: column;
   justify-content: space-between;
@@ -42,9 +42,11 @@
 }
 
 .contacts__list {
+  flex: 1;
   list-style: none;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .contacts__contact {

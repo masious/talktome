@@ -4,6 +4,7 @@ import user from '../user.png';
 
 import './Main.scss';
 import TimeAgo from '../lib/components/TimeAgo';
+import { VirtualTimeScheduler } from 'rxjs';
 
 let lastSeenInterval
 
@@ -25,12 +26,17 @@ export default class Main extends Component {
       conversation: {}
     }
 
-    this.lastMessageRef = React.createRef();
-
     this.sendMessage = this.sendMessage.bind(this);
     this.startListening = this.startListening.bind(this);
     this.handleSendMessage = this.handleSendMessage.bind(this);
+    this.setLastMessageRef = this.setLastMessageRef.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
+  }
+
+  setLastMessageRef (ref) {
+    this.lastMessageRef = ref;
+
+    this.scrollToLastMessage();
   }
 
   componentDidMount () {
@@ -43,8 +49,8 @@ export default class Main extends Component {
         .then(conversation => this.setState({ conversation }))
     }
 
-    if (nextProps.other !== this.props.other && lastSeenInterval) {
-      clearTimeout(lastSeenInterval)
+    if (nextProps.other !== this.props.other) {
+      clearInterval(lastSeenInterval)
     }
 
     if (nextProps.other) {
@@ -55,11 +61,28 @@ export default class Main extends Component {
     }
   }
 
-  componentDidUpdate () {
-    if (!this.lastMessageRef.current) {
+  componentWillUnmount () {
+    clearInterval(lastSeenInterval);
+  }
+
+  scrollToLastMessage () {
+    if (!this.lastMessageRef) {
       return
     }
-    this.lastMessageRef.current.scrollIntoView({ behavior: 'smooth' })
+
+    this.lastMessageRef.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (!this.state.conversation || !this.state.conversation.messages) {
+      return
+    }
+
+    if (prevState.conversation &&
+      prevState.conversation.messages &&
+      prevState.conversation.messages.length < this.state.conversation.messages.length) {
+        this.scrollToLastMessage()
+    }
 
     const { me } = this.props
 
@@ -139,10 +162,36 @@ export default class Main extends Component {
     const { draftMessage } = this.state
     const { me, other } = this.props
 
-    me.sendMessage(draftMessage.trim(), other._id)
     this.setState(({
       draftMessage: ''
-    }))
+    }));
+
+    const newMessage = {
+      body: draftMessage.trim(),
+      sender: me.data._id,
+      receiver: other._id,
+      isPending: true
+    }
+
+    const messagePromise = me.sendMessage(newMessage.body, newMessage.receiver)
+
+    const { conversation } = this.state
+
+    if (!conversation || !conversation.messages) {
+      return
+    }
+
+    conversation.messages.push(newMessage);
+
+    this.setState({ conversation })
+
+    messagePromise.then(({ _id, receivedAt }) => {
+      delete newMessage.isPending;
+      newMessage._id = _id;
+      newMessage.receivedAt = receivedAt;
+
+      this.setState({ conversation })
+    });
   }
 
   render () {
@@ -157,20 +206,21 @@ export default class Main extends Component {
     }
 
     const { conversation } = this.state;
+    const { me, other } = this.props
 
-    const myAvatar = this.props.me.data.photoUrl;
-    const otherAvatar = this.props.other.photoUrl || user;
+    const myAvatar = me.data.photoUrl;
+    const otherAvatar = other.photoUrl || user;
 
     return (
       <div className="app__main">
-        {!this.props.other && (
+        {!other && (
           <SelectAUser />
         )}
-        {this.props.other && (
+        {other && (
           <Fragment>
             <header className='main__header'>
               <div className='main__username'>
-                {this.props.other.username}
+                {other.username}
               </div>
               <div className='main__last-seen'>
                 <TimeAgo>{this.state.lastSeen}</TimeAgo>&nbsp;ago
@@ -181,26 +231,40 @@ export default class Main extends Component {
                 {conversation.messages &&
                   conversation.messages.map((message, index) => (
                     <div
-                      key={message._id}
-                      ref={conversation.messages.length - 1 === index && this.lastMessageRef}
+                      data-sender={message.sender}
+                      key={message._id || index}
+                      ref={conversation.messages.length - 1 === index && this.setLastMessageRef}
                       className={classnames(
                         'message',
-                        (message.sender === this.props.me.data._id) ?
+                        (message.sender === me.data._id) ?
                           'message--me' :
                           'message--other'
                       )}>
                       <div className='message__avatar'>
                         <img
                           alt=''
-                          src={message.sender === this.props.me.data._id ? myAvatar : otherAvatar}
-                        />
+                          src={(message.sender === me.data._id ?
+                            myAvatar :
+                            otherAvatar
+                          ) || user} />
                       </div>
                       <div className='message__body'>
                         {message.body}
-                        <i className={classnames('fa',
-                          message.sender === this.props.me.data._id &&
+                        <i className={classnames(
+                          message.sender === me.data._id &&
                           message.isSeen &&
-                          'fa-check-double')} />
+                          'fa fa-check-double',
+                          message.isPending && 'far fa-clock')} />
+                      </div>
+                      <div className='message__time'>
+                        {message.receivedAt ? (
+                          <span>
+                            <TimeAgo>
+                              {message.receivedAt}
+                            </TimeAgo>
+                            &nbsp;ago
+                          </span>
+                        ) : 'Not sent yet'}
                       </div>
                     </div>
                   ))}

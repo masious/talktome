@@ -16,7 +16,8 @@
 .header__logo {
   @extend .p;
 
-  flex: 0 0 300px;
+  flex: 0 0 auto;
+  width: 300px;
   font-size: 1.1rem;
 }
 

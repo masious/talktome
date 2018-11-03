@@ -10,15 +10,17 @@
 }
 
 .main__header {
-  @extend .p-double;
-  color: $text;
+  padding: ($gutter * 2) 0;
   display: flex;
   justify-content: space-between;
+  margin-top: 1px;
   border-bottom: 1px solid #d7dbe3;
 }
 
 .main__username {
   font-weight: bold;
+  color: $primary;
+  font-size: 1.2rem;
 }
 
 .main__last-seen {
@@ -30,7 +32,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 
@@ -93,10 +95,26 @@
   border-radius: 1rem;
 }
 
-.fa-check-double {
+.message__time {
+  font-size: .8rem;
+  color: darken($secondary, 30);
+  margin: 0 $gutter / 2;
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}
+
+.message:hover .message__time {
+  opacity: 1;
+}
+
+.fa-clock, .fa-check-double {
   margin-left: 1rem;
   font-size: .7rem;
   color: $primary;
+}
+
+.fa-clock {
+  color: darken($grey, 20%);
 }
 
 .main__compose {
@@ -117,6 +135,7 @@
   text-align: center;
   transform: translateY(-50%);
   z-index: 10;
+  cursor: pointer;
 }
 
 .compose__input {
@@ -133,8 +152,9 @@
   transform: translateX(-50%);
   // width: 35rem;
 
-  // font-weight: bold;
-  font-size: 1.3rem;
+  font-weight: bold;
+  color: lighten($text, 40%);
+  font-size: 2rem;
   text-align: center;
-  line-height: 1.8rem;
+  line-height: 2.5rem;
 }

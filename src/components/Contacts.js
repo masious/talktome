@@ -2,9 +2,22 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import FindContactModal from './FindContactModal';
 import user from '../user.png';
+import TimeAgo from '../lib/components/TimeAgo';
 
 import './Contacts.scss';
-import TimeAgo from '../lib/components/TimeAgo';
+
+function contactSorter(a, b) {
+  const aDate = a.lastMessage && a.lastMessage.receivedAt
+  const bDate = b.lastMessage && b.lastMessage.receivedAt
+
+  if (aDate && !bDate) {
+    return -1
+  } else if (!aDate && bDate) {
+    return 1
+  } else {
+    return (new Date(bDate)).getTime() - (new Date(aDate)).getTime()
+  }
+}
 
 const newMessageSound = new Audio('/pop.mp3');
 
@@ -25,7 +38,7 @@ export default class Contacts extends Component {
   addContact (userId) {
     this.props.me.addContact(userId)
       .then(user => {
-        this.props.notify(`${user.data.username} added to contacts.`)
+        this.props.notify(`${user.username} added to contacts.`)
       })
   }
 
@@ -89,7 +102,9 @@ export default class Contacts extends Component {
           </div>
         </header>
         <ul className="contacts__list">
-          {this.state.contacts.map((contact, index) => (
+          {this.state.contacts
+            .sort(contactSorter)
+            .map((contact, index) => (
             <li
               key={index}
               onClick={contact.setActive}
