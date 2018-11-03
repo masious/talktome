@@ -51,8 +51,6 @@ export default class Contacts extends Component {
       if (message.receiver === this.props.me.data._id) {
         contact.unreadCount = contact.unreadCount ? contact.unreadCount + 1 : 1;
 
-        this.props.notify(`New Message: ${message.body}`);
-
         newMessageSound.play();
       }
       contact.lastMessage = message
@@ -68,7 +66,7 @@ export default class Contacts extends Component {
       const contact = this.state.contacts
         .find(contact => contact._id === message.sender)
 
-      contact.unreadCount = contact.unreadCount - 1
+      contact.unreadCount = contact.unreadCount > 0 ? contact.unreadCount - 1 : 0
       this.setState({
         contacts: this.state.contacts
       })
@@ -100,10 +98,12 @@ export default class Contacts extends Component {
                 active === contact && 'contact--active'
               )}>
               <div className='contact__avatar'>
-                <img
-                  src={contact.photoUrl || user}
-                  alt='user avatar'
-                  className='contact__avatar' />
+                <div className='avatar__img-wrapper'>
+                  <img
+                    src={contact.photoUrl || user}
+                    alt='user avatar'
+                    className='avatar__img' />
+                </div>
                 {!!contact.unreadCount && (
                   <div className='contact__badge'>
                     {contact.unreadCount}

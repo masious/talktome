@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export default class ChatApi {
-  static endpoint = 'http://localhost:3000'
+  static endpoint = ''
 
   static post (url, data, config) {
     return axios.post(`${ChatApi.endpoint}${url}`, data, config)

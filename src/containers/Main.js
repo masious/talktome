@@ -75,6 +75,7 @@ export default class Main extends Component {
     if (me) {
       me.addListener('new message', data => {
         if (!this.state.conversation ||
+          !this.state.conversation._doc ||
           (data.conversationId !== this.state.conversation._doc._id)) {
           return
         }

@@ -64,11 +64,16 @@
   color: $white;
 }
 
-.message__avatar img {
+.message__avatar {
   @extend .shadowed;
 
   border-radius: 50%;
+  width: 3rem;
   height: 3rem;
+  overflow: hidden;
+}
+
+.message__avatar img {
 }
 
 .message--other .message__avatar {
@@ -111,6 +116,7 @@
   font-size: 1.3rem;
   text-align: center;
   transform: translateY(-50%);
+  z-index: 10;
 }
 
 .compose__input {

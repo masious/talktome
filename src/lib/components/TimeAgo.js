@@ -20,7 +20,7 @@ Moment.globalMoment.updateLocale('en', {
         yy : '%dy'
   }
 });
-Moment.globalMoment.relativeTimeThreshold('ss', 20);
+Moment.globalMoment.relativeTimeThreshold('ss', 59);
 
 export default class TimeAgo extends Component {
   render () {

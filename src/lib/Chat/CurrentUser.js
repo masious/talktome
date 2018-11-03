@@ -29,7 +29,9 @@ export default class CurrentUser extends User {
 
   listen () {
     if (!this.socket) {
-      this.socket = io(`http://localhost:3001?token=${this.data.jwt}`);
+      const prefix = process.env.NODE_ENV === 'development' ?
+        'http://localhost:3001' : '';
+      this.socket = io(`${prefix}/?token=${this.data.jwt}`);
     }
 
     this.socket.on('new message', data => {
