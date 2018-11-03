@@ -1,0 +1,30 @@
+@import '../../styles/lib/index.scss';
+
+.tabmenu {
+  width: 100%;
+}
+
+.tabmenu__headers {
+  border-bottom: 1px solid $grey;
+  display: flex;
+  justify-content: center;
+}
+
+.tabmenu__header {
+  @extend .p-half;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.tabmenu__header--active {
+  border-bottom: 3px solid $primary;
+}
+
+.tabmenu__body {
+  @extend .p-half;
+  display: none;
+}
+
+.tabmenu__body--active {
+  display: block;
+}

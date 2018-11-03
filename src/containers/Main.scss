@@ -1,0 +1,134 @@
+@import '../styles/lib/index.scss';
+
+.app__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  background-color: $secondary;
+}
+
+.main__header {
+  @extend .p-double;
+  color: $text;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #d7dbe3;
+}
+
+.main__username {
+  font-weight: bold;
+}
+
+.main__last-seen {
+  color: lighten($text, 30%);
+}
+
+.main__chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow-y: scroll;
+}
+
+
+.chat__messages {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; // Todo
+}
+
+.message {
+  flex: 1 0;
+  display: flex;
+  align-items: flex-end;
+  margin: $gutter / 2;
+  margin-bottom: $gutter / 2;
+  max-width: 60%;
+}
+
+.message--me {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+}
+
+.message--me .message__body {
+  border-bottom-right-radius: 0;
+}
+
+.message--other .message__body {
+  border-bottom-left-radius: 0;
+  background-color: $primary;
+  color: $white;
+}
+
+.message__avatar img {
+  @extend .shadowed;
+
+  border-radius: 50%;
+  height: 3rem;
+}
+
+.message--other .message__avatar {
+  margin-right: $gutter / 2;
+}
+
+.message--me .message__avatar {
+  margin-left: $gutter / 2;
+}
+
+.message__body {
+  @extend .p, .shadowed;
+
+  flex: 1;
+  background-color: $white;
+  color: $text;
+  border-radius: 1rem;
+}
+
+.fa-check-double {
+  margin-left: 1rem;
+  font-size: .7rem;
+  color: $primary;
+}
+
+.main__compose {
+  margin-top: $gutter * 2;
+  position: relative;
+}
+
+.compose__button {
+  position: absolute;
+  top: 0;
+  right: calc(1rem + 7px);
+  background: $primary;
+  color: $white;
+  border-radius: 50%;
+  padding: .5rem;
+  padding-right: .7rem;
+  font-size: 1.3rem;
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.compose__input {
+  @extend .p;
+
+  width: 100%;
+  border-width: 0;
+}
+
+.main__please-select {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  // width: 35rem;
+
+  // font-weight: bold;
+  font-size: 1.3rem;
+  text-align: center;
+  line-height: 1.8rem;
+}

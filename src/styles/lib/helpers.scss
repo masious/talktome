@@ -1,0 +1,28 @@
+@import './variables.scss';
+
+.p {
+  padding: $gutter;
+}
+
+.p-double {
+  padding: $gutter * 2;
+}
+
+.p-half {
+  padding: $gutter / 2;
+}
+
+.p-dhalf {
+  padding: $gutter / 4;
+}
+
+.clearfix::after {
+  display: table;
+  content: '';
+  clear: both;
+  // visibility: hidden;
+}
+
+.shadowed {
+  box-shadow: 0 0 8px darken($secondary, 20%);
+}

@@ -1,0 +1,41 @@
+@import '../styles/lib/index.scss';
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.avatar__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  color: $white;
+  line-height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar:hover .avatar__overlay {
+  display: flex;
+}
+
+.avatar__change {
+  @extend .p-half;
+
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: $border-radius;
+}
+
+.avatar__input {
+  display: none;
+}

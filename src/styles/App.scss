@@ -1,0 +1,22 @@
+@import './lib/index.scss';
+
+.container {
+  height: 100vh;
+  background: $secondary;
+  flex-direction: column;
+  padding: $gutter * 2;
+}
+
+.app {
+  margin-top: 3rem;
+  // width: calc(100% - 300px);
+  height: calc(100% - 3rem);
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}
+
+.app__forms {
+  width: 60%;
+  margin: 2rem auto;
+}

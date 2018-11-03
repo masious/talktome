@@ -1,0 +1,122 @@
+@import '../styles/lib/index.scss';
+
+.app__contacts {
+  @extend .p, .shadowed;
+
+  margin-right: 2 * $gutter;
+  border-radius: $border-radius;
+  width: 300px;
+  background-color: $white;
+  overflow-y: hidden;
+  font-size: .9rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.contacts__header {
+  @extend .clearfix;
+
+  padding-bottom: $gutter;
+  font-weight: bold;
+  color: $primary;
+  border-bottom: 1px solid darken($secondary, 10%);
+}
+
+.contacts__title {
+  padding: $gutter 0;
+  float: left;
+  font-size: 1.2rem;
+}
+
+.contacts__find {
+  // @extend .shadowed;
+
+  padding: .8rem;
+  margin-top: .8rem;
+  cursor: pointer;
+  float: right;
+  font-size: 1rem;
+  background-color: darken($secondary, 10);
+  color: darken($secondary, 40%);
+  border-radius: $border-radius;
+}
+
+.contacts__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.contacts__contact {
+  @extend .p;
+
+  margin: 0 (-1 * $gutter);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.contact__avatar {
+  flex: 0 0 3.5rem;
+  margin-right: $gutter;
+  vertical-align: middle;
+  border-radius: 50%;
+  position: relative;
+}
+
+.contact__badge {
+  @extend .shadowed;
+
+  position: absolute;
+  top: -.2rem;
+  right: -.2rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: .5rem;
+  background: $primary;
+  color: $white;
+  border-radius: 50%;
+  font-size: .8rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.contact__info {
+  flex: 1;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.contact__username {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: $gutter;
+}
+
+.contact__message {
+  flex: 1;
+  color: lighten($text, 30%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.contact__body {
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.contact__time {
+  white-space: nowrap;
+}
+
+.contact--active {
+  background: lighten($secondary, 1%);
+}

@@ -1,0 +1,23 @@
+@import '../../styles/lib/index.scss';
+
+.toast {
+  @extend .p;
+
+  position: fixed;
+  transition: .2s transform ease-out;
+  will-change: transform;
+  margin: 0 auto;
+  left: 50%;
+  bottom: 0;
+  width: 300px;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: $dark-grey;
+  color: $white;
+  text-align: center;
+  transform: translateX(-50%) translateY(100%);
+}
+
+.toast--active {
+  transform: translateX(-50%) translateY(-50px);
+}

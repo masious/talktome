@@ -1,0 +1,42 @@
+@import '../styles/lib/index.scss';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  background: $primary;
+  color: $white;
+  z-index: 10;
+}
+
+.header__logo {
+  @extend .p;
+
+  flex: 0 0 300px;
+  font-size: 1.1rem;
+}
+
+.header__actions {
+  display: flex;
+  align-items: stretch;
+
+  .fa {
+    margin-right: $gutter / 4;
+  }
+}
+
+.header__username {
+  @extend .p;
+
+  flex: 1;
+}
+
+.header__last-online {
+  margin-left: $gutter;
+  font-size: .9rem;
+  color: rgba(255, 255, 255, .8);
+}

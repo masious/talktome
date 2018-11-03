@@ -1,0 +1,59 @@
+@import '../../styles/lib/index.scss';
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  right: 0;
+  background: $white;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__header{
+  @extend .p;
+
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  background-color: $primary;
+  color: $white;
+}
+
+.modal__header .fa {
+  cursor: pointer;
+}
+
+.modal__body {
+  @extend .p;
+
+  flex: 1;
+  background-color: $secondary;
+}
+
+.modal__footer {
+  @extend .p;
+
+  display: flex;
+  justify-content: flex-end;
+  background-color: $secondary;
+}
+
+.modal__action {
+  @extend .p-half;
+
+  margin-left: $gutter / 2;
+  background-color: $primary;
+  color: #fff;
+  cursor: pointer;
+}

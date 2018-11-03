@@ -1,0 +1,39 @@
+@import '../../styles/lib/index.scss';
+
+.dropdown {
+  cursor: pointer;
+  display: flex;
+  position: relative;
+}
+
+.dropdown__header {
+  @extend .p;
+}
+
+.dropdown__header:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown__items {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $primary;
+  width: 100%;
+  list-style: none;
+}
+.dropdown__items > li {
+  @extend .p;
+  font-size: .9rem;
+}
+
+.dropdown__items > li:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown__items--open {
+  display: flex;
+}
