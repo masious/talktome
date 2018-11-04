@@ -11,7 +11,7 @@ let lastSeenInterval
 function SelectAUser () {
   return (
     <div className='main__please-select'>
-      Please choose a user from the side menu to start chatting.
+      Please select a contact from contacts to start chatting.
     </div>
   )
 }

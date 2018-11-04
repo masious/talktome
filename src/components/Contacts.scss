@@ -10,7 +10,6 @@
   background-color: $white;
   font-size: .9rem;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .contacts__header {
@@ -29,30 +28,28 @@
 }
 
 .contacts__find {
-  // @extend .shadowed;
+  @extend .p;
 
-  padding: .8rem;
-  margin-top: .8rem;
   cursor: pointer;
   float: right;
   font-size: 1rem;
+  font-weight: normal;
   background-color: darken($secondary, 10);
   color: darken($secondary, 40%);
   border-radius: $border-radius;
 }
 
 .contacts__list {
-  flex: 1;
   list-style: none;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  margin: 0 (-1 * $gutter);
 }
 
 .contacts__contact {
   @extend .p;
 
-  margin: 0 (-1 * $gutter);
   display: flex;
   align-items: center;
   cursor: pointer;
