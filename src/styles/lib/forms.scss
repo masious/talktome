@@ -55,3 +55,12 @@ input[type="submit"] {
 .form__group--error input {
   border: 1px solid $danger;
 }
+
+.btn--primary[type] {
+  @extend .p-half;
+
+  margin-top: $gutter;
+  background: $primary;
+  color: $white;
+  border: 1px solid darken($primary, 10%);
+}

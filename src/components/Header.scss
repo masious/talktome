@@ -6,17 +6,19 @@
   left: 0;
   right: 0;
   display: flex;
+  height: 4.5rem;
   align-items: stretch;
   justify-content: space-between;
   background: $primary;
   color: $white;
-  z-index: 10;
+  z-index: 100;
   box-shadow: 0 0 8px $primary;
 }
 
 .header__logo {
   @extend .p;
 
+  padding-left: $gutter * 2;
   flex: 0 0 auto;
   width: 300px;
   font-size: 1.1rem;

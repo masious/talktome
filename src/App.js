@@ -7,10 +7,12 @@ import Contacts from './components/Contacts';
 import Signup from './containers/Signup';
 import Login from './containers/Login';
 import Toast from './lib/components/Toast';
-
-import './styles/App.scss';
 import Main from './containers/Main';
 import SettingsModal from './components/SettingsModal';
+import screenshot from './shot.png';
+
+import './App.scss';
+import './Home.scss';
 
 class App extends Component {
   constructor(props) {
@@ -100,6 +102,63 @@ class App extends Component {
   render () {
     const { me, other } = this.state
 
+    const previousHome = (
+      <div className="app__forms">
+        <TabMenu
+          data={[{
+            title: 'Signup',
+            body: () => <Signup setUser={this.setMe} />,
+            isActive: true
+          }, {
+            title: 'Login',
+            body: () => <Login setUser={this.setMe} />
+          }]} />
+      </div>
+    );
+
+    const newHome = (
+      <div className='app__home'>
+        <div className='home__intro'>
+          <div className='intro__title'>
+            Talk To Me
+          </div>
+          <div className='intro__message'>
+            A fully functional messaging website
+            <p>
+              Built only for having a
+              demo of what I can do.
+            <br />
+              Checkout sources for&nbsp;
+            <a href='https://github.com/masious/talktome'>
+                frontend
+            </a>
+              &nbsp; and&nbsp;
+            <a href='https://github.com/masious/talktome'>
+                backend
+            </a>
+              &nbsp;, or checkout my&nbsp;
+            <a href='https://docs.google.com/document/d/1AxtNumm1b9W73JrVBaeVrgjtxjapezu5OfCiDd7r2SA/edit?usp=sharing'>
+                resume
+            </a>.
+            </p>
+          </div>
+          <div className='home__actions'>
+            {previousHome}
+          </div>
+        </div>
+        <div className='home__second'>
+          <div className='screenshot'>
+            <div className='screenshot__img-wrapper'>
+              <img
+                alt='How talk to looks like in a desktop.'
+                src={screenshot}
+                className='screenshot__img' />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
     return (
       <div className="container" id='container'>
         <Header
@@ -109,17 +168,7 @@ class App extends Component {
           logoutRequest={me && this.logoutUser} />
         <div className="app">
           {!me && (
-            <div className="app__forms">
-              <TabMenu
-                data={[{
-                  title: 'Signup',
-                  body: () => <Signup setUser={this.setMe} />,
-                  isActive: true
-                }, {
-                  title: 'Login',
-                  body: () => <Login setUser={this.setMe} />
-                }]} />
-            </div>
+            newHome
           )}
           {me && (
             <Fragment>

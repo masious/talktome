@@ -8,6 +8,7 @@
   border-bottom: 1px solid $grey;
   display: flex;
   justify-content: center;
+  padding-top: $gutter * 2;
 }
 
 .tabmenu__header {
@@ -23,6 +24,7 @@
 .tabmenu__body {
   @extend .p-half;
   display: none;
+  padding: $gutter * 2;
 }
 
 .tabmenu__body--active {

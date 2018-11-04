@@ -57,7 +57,7 @@ export default class SignupForm extends PureComponent {
             error={errors && errors.welcomeMessage}
             placeholder='Talk to me.'
             type='text' />
-          <input type="submit" value="Signup" />
+          <input type="submit" className='btn--primary' value="Signup" />
         </form>
       </div>
     )

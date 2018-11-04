@@ -4,14 +4,15 @@ import user from '../user.png';
 
 import './Main.scss';
 import TimeAgo from '../lib/components/TimeAgo';
-import { VirtualTimeScheduler } from 'rxjs';
 
 let lastSeenInterval
 
 function SelectAUser () {
   return (
     <div className='main__please-select'>
-      Please select a contact from contacts to start chatting.
+      Please select a contact to start chatting.
+      <br/>
+      Feel free to message anyone :)
     </div>
   )
 }

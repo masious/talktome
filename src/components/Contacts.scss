@@ -50,6 +50,7 @@
 .contacts__contact {
   @extend .p;
 
+  flex: 0 0 5rem;
   display: flex;
   align-items: center;
   cursor: pointer;

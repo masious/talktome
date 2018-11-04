@@ -41,7 +41,7 @@ export default class SignupForm extends PureComponent {
             onChange={this.handlePasswordChange}
             error={errors && errors.password}
             type='password' />
-          <input type="submit" value="Login" />
+          <input className='btn--primary' type="submit" value="Login" />
         </form>
       </div>
     )

@@ -1,4 +1,4 @@
-@import './lib/index.scss';
+@import './styles/lib/index.scss';
 
 .container {
   height: 100vh;
@@ -8,15 +8,9 @@
 }
 
 .app {
-  margin-top: 3rem;
-  // width: calc(100% - 300px);
-  height: calc(100% - 3rem);
+  margin-top: 4.5rem;
+  height: calc(100% - 4.5rem);
   flex: 1;
   display: flex;
   align-items: stretch;
-}
-
-.app__forms {
-  width: 60%;
-  margin: 2rem auto;
 }

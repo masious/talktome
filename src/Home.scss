@@ -1,0 +1,60 @@
+@import './styles/lib/index.scss';
+
+.app__home {
+  flex: 1 1 100%;
+}
+
+.home__intro {
+  height: 200px;
+}
+
+.intro__title {
+  font-size: 2rem;
+  color: $primary;
+}
+
+.intro__message {
+  margin-top: $gutter;
+  position: relative;
+  color: $text;
+  font-size: 1.1rem;
+  width: 600px;
+  line-height: 1.9rem;
+
+  p {
+    margin-top: 1rem;
+  }
+
+  a, a:visited {
+    text-decoration: none;
+    color: $primary;
+  }
+}
+
+.home__actions {
+  @extend .shadowed;
+
+  border-radius: $border-radius;
+  position: absolute;
+  top: 12rem;
+  right: 10rem;
+  width: 28.5rem;
+  background: $white;
+  z-index: 10;
+}
+
+.home__second {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: $white;
+}
+
+.screenshot {
+  margin-left: 5rem;
+  width: 35.5rem;
+}
+
+.screenshot__img {
+  margin-top: -3rem;
+}
