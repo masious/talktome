@@ -123,6 +123,8 @@
 }
 
 .compose__button {
+  @extend .shadowed;
+  
   position: absolute;
   top: 0;
   right: calc(1rem + 7px);
