@@ -125,8 +125,7 @@ class App extends Component {
           <div className='intro__message'>
             A fully functional messaging website
             <p>
-              Built only for having a
-              demo of what I can do.
+              Built only for having a demo of what I can do.
             <br />
               Checkout sources for&nbsp;
             <a href='https://github.com/masious/talktome'>
@@ -174,9 +173,9 @@ class App extends Component {
             <Fragment>
               <Contacts
                 setOther={this.setOther}
+                other={other}
                 me={me}
-                notify={this.notify}
-                active={other} />
+                notify={this.notify} />
               <Main
                 me={me}
                 other={other} />

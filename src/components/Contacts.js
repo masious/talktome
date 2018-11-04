@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import FindContactModal from './FindContactModal';
-import user from '../user.png';
-import TimeAgo from '../lib/components/TimeAgo';
 
 import './Contacts.scss';
+import Contact from './Contact';
 
-function contactSorter(a, b) {
+function contactSorter (a, b) {
   const aDate = a.lastMessage && a.lastMessage.receivedAt
   const bDate = b.lastMessage && b.lastMessage.receivedAt
 
@@ -51,9 +49,6 @@ export default class Contacts extends Component {
   componentDidMount () {
     this.props.me.getContacts()
       .then(contacts => {
-        contacts.forEach(contact =>
-          contact.setActive = () => this.props.setOther(contact)
-        )
         this.setState({ contacts })
       })
 
@@ -69,8 +64,8 @@ export default class Contacts extends Component {
       contact.lastMessage = message
       this.setState({
         contacts: this.state.contacts
-      })
-    })
+      });
+    });
 
     this.props.me.addListener('marked seen', message => {
       if (message.receiver !== this.props.me.data._id) {
@@ -87,10 +82,6 @@ export default class Contacts extends Component {
   }
 
   render () {
-    const {
-      active
-    } = this.props
-
     return (
       <aside className="app__contacts">
         <header className='contacts__header'>
@@ -105,43 +96,12 @@ export default class Contacts extends Component {
           {this.state.contacts
             .sort(contactSorter)
             .map((contact, index) => (
-            <li
-              key={index}
-              onClick={contact.setActive}
-              className={classnames(
-                'contacts__contact',
-                active === contact && 'contact--active'
-              )}>
-              <div className='contact__avatar'>
-                <div className='avatar__img-wrapper'>
-                  <img
-                    src={contact.photoUrl || user}
-                    alt='user avatar'
-                    className='avatar__img' />
-                </div>
-                {!!contact.unreadCount && (
-                  <div className='contact__badge'>
-                    {contact.unreadCount}
-                  </div>
-                )}
-              </div>
-              <div className='contact__info'>
-                <div className='contact__username'>
-                  {contact.username}
-                </div>
-                {contact.lastMessage && (
-                  <div className='contact__message'>
-                    <div className='contact__body'>
-                      {contact.lastMessage.body}
-                    </div>
-                    <TimeAgo className='contact__time'>
-                      {contact.lastMessage.receivedAt}
-                    </TimeAgo>&nbsp;ago
-                  </div>
-                )}
-              </div>
-            </li>
-          ))}
+              <Contact
+                key={index}
+                onClick={this.props.setOther}
+                contact={contact}
+                isActive={this.props.other === contact} />
+            ))}
         </ul>
         <FindContactModal
           isOpen={this.state.isFindModalOpen}

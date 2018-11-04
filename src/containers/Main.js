@@ -11,7 +11,7 @@ function SelectAUser () {
   return (
     <div className='main__please-select'>
       Please select a contact to start chatting.
-      <br/>
+      <br />
       Feel free to message anyone :)
     </div>
   )
@@ -51,11 +51,10 @@ export default class Main extends Component {
     }
 
     if (nextProps.other !== this.props.other) {
-      clearInterval(lastSeenInterval)
-    }
+      clearInterval(lastSeenInterval);
 
-    if (nextProps.other) {
-      this.getLastSeen(nextProps.other._id)
+      this.getLastSeen(nextProps.other._id);
+      
       lastSeenInterval = setInterval(() => {
         this.getLastSeen(nextProps.other._id)
       }, 5000);
@@ -82,7 +81,7 @@ export default class Main extends Component {
     if (prevState.conversation &&
       prevState.conversation.messages &&
       prevState.conversation.messages.length < this.state.conversation.messages.length) {
-        this.scrollToLastMessage()
+      this.scrollToLastMessage()
     }
 
     const { me } = this.props

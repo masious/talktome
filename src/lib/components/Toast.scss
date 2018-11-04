@@ -1,7 +1,7 @@
 @import '../../styles/lib/index.scss';
 
 .toast {
-  @extend .p;
+  @extend .p, .shadowed;
 
   position: fixed;
   transition: .2s transform ease-out;
