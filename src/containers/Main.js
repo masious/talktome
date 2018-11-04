@@ -141,7 +141,9 @@ export default class Main extends Component {
   }
 
   handleSendMessage (event) {
-    if (event.keyCode === 13 && event.shiftKey === false) {
+    if (event.keyCode === 13 &&
+      event.shiftKey === false &&
+      event.target.value.length > 0) {
       this.sendMessage()
     }
   }
@@ -173,7 +175,7 @@ export default class Main extends Component {
       isPending: true
     }
 
-    const messagePromise = me.sendMessage(newMessage.body, newMessage.receiver)
+    const messagePromise = me.sendMessage(newMessage.body, other._id)
 
     const { conversation } = this.state
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import AsyncSelect from 'react-select/lib/Async';
 import Modal from '../lib/components/Modal';
-import User from '../lib/Chat/User';
 
 export default class FindContactModal extends Component {
   constructor(props) {
@@ -11,11 +10,12 @@ export default class FindContactModal extends Component {
       users: []
     }
 
-    this.addContact = this.addContact.bind(this)
+    this.addContact = this.addContact.bind(this);
+    this.searchContacts = this.searchContacts.bind(this);
   }
 
-  static searchContacts (username, callback) {
-    User.search(username)
+  searchContacts (username, callback) {
+    this.props.me.search(username)
       .then(users => {
         callback(users.map(user => ({
           label: user.data.username,
@@ -28,7 +28,7 @@ export default class FindContactModal extends Component {
     if (action !== 'select-option') {
       return
     }
-    
+
     this.props.onAdd(option.value)
   }
 
@@ -40,7 +40,7 @@ export default class FindContactModal extends Component {
         onRequestClose={this.props.handleClose}>
         <AsyncSelect
           cacheOptions
-          loadOptions={FindContactModal.searchContacts}
+          loadOptions={this.searchContacts}
           placeholder='Search Usernames...'
           onChange={this.addContact}
           onInputChange={this.handleInputChange} />

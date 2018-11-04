@@ -95,7 +95,8 @@ class App extends Component {
   logoutUser () {
     logoutUser();
     this.setState({
-      me: null
+      me: null,
+      other: null
     });
   }
 

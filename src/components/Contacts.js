@@ -56,6 +56,9 @@ export default class Contacts extends Component {
       const contact = this.state.contacts
         .find(contact => contact.conversationId === conversationId)
 
+      if (!contact) {
+        return
+      }
       if (message.receiver === this.props.me.data._id) {
         contact.unreadCount = contact.unreadCount ? contact.unreadCount + 1 : 1;
 
@@ -106,6 +109,7 @@ export default class Contacts extends Component {
         <FindContactModal
           isOpen={this.state.isFindModalOpen}
           onAdd={this.addContact}
+          me={this.props.me}
           handleClose={this.closeFindModal} />
       </aside>
     )

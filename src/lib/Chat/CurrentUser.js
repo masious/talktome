@@ -138,4 +138,12 @@ export default class CurrentUser extends User {
       this.socket.emit('getLastSeen', userId, resolve);
     });
   }
+
+  search (username) {
+    return User.get(`/users/search?q=${username}`, {
+      headers: {
+        'Authorization': `Bearer ${this.data.jwt}`
+      }
+    }).then(usersData => usersData.map(userData => new User(userData)));
+  }
 }

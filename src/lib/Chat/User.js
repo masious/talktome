@@ -6,9 +6,4 @@ export default class User extends ChatApi {
 
     this.data = data
   }
-
-  static search(username) {
-    return User.get(`/users/search?q=${username}`)
-      .then(data => data.map(userData => new User(userData)));
-  }
 }
