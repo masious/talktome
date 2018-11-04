@@ -225,6 +225,7 @@ export default class Main extends Component {
                 {other.username}
               </div>
               <div className='main__last-seen'>
+                Last seen:&nbsp;
                 <TimeAgo>{this.state.lastSeen}</TimeAgo>&nbsp;ago
               </div>
             </header>
