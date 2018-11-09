@@ -1,16 +1,22 @@
 @import './styles/lib/index.scss';
 
 .app__home {
-  flex: 1 1 100%;
+  flex: 1;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .home__intro {
-  height: 200px;
+  padding-bottom: $gutter * 3;
 }
 
 .intro__title {
   font-size: 2rem;
   color: $primary;
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .intro__message {
@@ -29,6 +35,10 @@
     text-decoration: none;
     color: $primary;
   }
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .home__actions {
@@ -38,9 +48,14 @@
   position: absolute;
   top: 12rem;
   right: 10rem;
-  width: 28.5rem;
   background: $white;
   z-index: 10;
+
+  @include mobile {
+    top: 5rem;
+    left: 0;
+    right: 0;
+  }
 }
 
 .home__second {
@@ -48,6 +63,10 @@
   left: 0;
   right: 0;
   background: $white;
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .screenshot {
@@ -57,4 +76,5 @@
 
 .screenshot__img {
   margin-top: -3rem;
+  width: calc(100% - 4rem);
 }

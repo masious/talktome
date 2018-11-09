@@ -5,6 +5,11 @@
   background: $secondary;
   flex-direction: column;
   padding: $gutter * 2;
+
+  @include mobile {
+    padding: 0;
+    padding-top: $gutter;
+  }
 }
 
 .app {

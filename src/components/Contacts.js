@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import FindContactModal from './FindContactModal';
 
 import './Contacts.scss';
 import Contact from './Contact';
 
-function contactSorter (a, b) {
-  const aDate = a.lastMessage && a.lastMessage.receivedAt
-  const bDate = b.lastMessage && b.lastMessage.receivedAt
+const contactSorter = contacts => (aId, bId) => {
+  const a = contacts[aId];
+  const b = contacts[bId];
+  const aDate = a.lastMessage && a.lastMessage.receivedAt;
+  const bDate = b.lastMessage && b.lastMessage.receivedAt;
 
   if (aDate && !bDate) {
-    return -1
+    return -1;
   } else if (!aDate && bDate) {
-    return 1
+    return 1;
   } else {
-    return (new Date(bDate)).getTime() - (new Date(aDate)).getTime()
+    return (new Date(bDate)).getTime() - (new Date(aDate)).getTime();
   }
 }
 
@@ -24,8 +27,7 @@ export default class Contacts extends Component {
     super(props)
 
     this.state = {
-      isFindModalOpen: false,
-      contacts: []
+      isFindModalOpen: false
     };
 
     this.addContact = this.addContact.bind(this)
@@ -47,46 +49,15 @@ export default class Contacts extends Component {
   }
 
   componentDidMount () {
-    this.props.me.getContacts()
-      .then(contacts => {
-        this.setState({ contacts })
-      })
-
-    this.props.me.addListener('new message', ({ conversationId, message }) => {
-      const contact = this.state.contacts
-        .find(contact => contact.conversationId === conversationId)
-
-      if (!contact) {
-        return
-      }
-      if (message.receiver === this.props.me.data._id) {
-        contact.unreadCount = contact.unreadCount ? contact.unreadCount + 1 : 1;
-
-        newMessageSound.play();
-      }
-      contact.lastMessage = message
-      this.setState({
-        contacts: this.state.contacts
-      });
-    });
-
-    this.props.me.addListener('marked seen', message => {
-      if (message.receiver !== this.props.me.data._id) {
-        return
-      }
-      const contact = this.state.contacts
-        .find(contact => contact._id === message.sender)
-
-      contact.unreadCount = contact.unreadCount > 0 ? contact.unreadCount - 1 : 0
-      this.setState({
-        contacts: this.state.contacts
-      })
-    })
+    this.props.getContacts()
   }
 
   render () {
+    const hasContact = this.props.other && this.props.other.username;
+    const activeClass = !hasContact && 'app__contacts--active';
+
     return (
-      <aside className="app__contacts">
+      <aside className={classnames('app__contacts', activeClass)}>
         <header className='contacts__header'>
           <div className='contacts__title'>
             Contacts
@@ -96,14 +67,14 @@ export default class Contacts extends Component {
           </div>
         </header>
         <ul className="contacts__list">
-          {this.state.contacts
-            .sort(contactSorter)
-            .map((contact, index) => (
+          {Object
+            .keys(this.props.contacts)
+            .sort(contactSorter(this.props.contacts))
+            .map((contactId, index) => (
               <Contact
                 key={index}
-                onClick={this.props.setOther}
-                contact={contact}
-                isActive={this.props.other === contact} />
+                contact={this.props.contacts[contactId]}
+                isActive={this.props.other === this.props.contacts[contactId]} />
             ))}
         </ul>
         <FindContactModal

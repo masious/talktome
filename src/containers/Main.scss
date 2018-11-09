@@ -49,6 +49,10 @@
   margin: $gutter / 2;
   margin-bottom: $gutter / 2;
   max-width: 60%;
+
+  @include mobile {
+    max-width: 100%;
+  }
 }
 
 .message--me {
@@ -164,4 +168,8 @@
   font-size: 2rem;
   text-align: center;
   line-height: 2.5rem;
+
+  @include mobile {
+    display: none;
+  }
 }

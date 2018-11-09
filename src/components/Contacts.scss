@@ -6,11 +6,24 @@
   display: flex;
   margin-right: 2 * $gutter;
   border-radius: $border-radius;
-  width: 300px;
+  width: 18rem;
   background-color: $white;
   font-size: .9rem;
   flex-direction: column;
   padding-bottom: 0;
+
+  @include mobile {
+    width: 5.5rem;
+    overflow: hidden;
+    padding: $gutter / 2;
+  }
+}
+
+.app__contacts--active {
+  @include mobile {
+    width: 100%;
+    margin-right: 0;
+  }
 }
 
 .contacts__header {
@@ -46,15 +59,24 @@
   flex-direction: column;
   overflow-y: auto;
   margin: 0 (-1 * $gutter);
+
+  @include mobile {
+    padding-left: $gutter / 2;
+  }
 }
 
 .contacts__contact {
   @extend .p;
 
   flex: 0 0 5rem;
+  cursor: pointer;
+}
+
+.contacts__contact a {
   display: flex;
   align-items: center;
-  cursor: pointer;
+  text-decoration: inherit;
+  color: inherit;
 }
 
 .contact__avatar {

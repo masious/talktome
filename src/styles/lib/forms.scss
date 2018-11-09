@@ -34,15 +34,28 @@ input[type="submit"] {
   display: flex;
   margin-bottom: 1rem;
 
+  @include mobile {
+    flex-direction: column;
+  }
+
   label {
     flex: 2;
     text-align: right;
     margin-right: 1rem;
     padding-top: $gutter / 2;
+
+    @include mobile {
+      text-align: left;
+    }
   }
 }
 .field__wrapper {
   flex: 5;
+
+  @include mobile {
+    width: 100%;
+    flex: 0 0 auto;
+  }
 }
 
 .form__error {

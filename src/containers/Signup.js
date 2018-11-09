@@ -1,32 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import SignupForm from '../components/SignupForm';
-import CurrentUser from '../lib/Chat/CurrentUser';
-import saveUser from '../utils/saveUser'
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/user';
 
-export default class Signup extends Component {
-  constructor (props) {
-    super(props)
 
-    this.state = {
-      errors: null
-    }
-
-    this.onSubmit = this.onSubmit.bind(this)
-  }
-  onSubmit (userData) {
-    CurrentUser.signup(userData)
-      .then(user => {
-        saveUser(user)
-        this.props.setUser(user)
-      })
-      .catch(err => {
-        this.setState({ errors: err.response.data.errors })
-      })
+class Signup extends Component {
+  state = {
+    errors: []
   }
 
   render () {
+    console.log(this.props.signup)
     return (
-      <SignupForm onSubmit={this.onSubmit} errors={this.state.errors} />
+      <SignupForm
+        onSubmit={this.props.signup}
+        errors={this.state.errors}
+      />
     )
   }
 }
+
+const mapDispatch = dispatch => ({
+  signup: bindActionCreators(actionCreators.signup, dispatch)
+});
+
+export default connect(null, mapDispatch)(Signup);

@@ -22,9 +22,12 @@
 }
 
 .tabmenu__body {
-  @extend .p-half;
   display: none;
   padding: $gutter * 2;
+
+  @include mobile {
+    padding: $gutter;
+  }
 }
 
 .tabmenu__body--active {
