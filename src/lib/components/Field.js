@@ -25,6 +25,7 @@ export default class Field extends Component {
             <input
               type={this.props.type || 'text'}
               value={this.props.value}
+              defaultValue={this.props.defaultValue}
               placeholder={this.props.placeholder}
               onChange={this.onChange} />
             {this.props.right}

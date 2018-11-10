@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Dropdown from '../lib/components/Dropdown';
 import { unsetUser } from '../store/user';
 import './Header.scss'
 
 class Header extends Component {
+  logout = () => {
+    this.props.logout();
+    window.location.reload();
+  }
+
   render () {
     return (
       <header className="header">
@@ -16,11 +21,11 @@ class Header extends Component {
           {this.props.username && (
             <Dropdown header={`Hello, ${this.props.username}`}>
               <li className="header__me">
-                <a href='/chat/settings'>
+                <Link to='/chat/settings'>
                   Edit profile
-                </a>
+                </Link>
               </li>
-              <li className='header__logout' onClick={this.props.logoutRequest}>
+              <li className='header__logout' onClick={this.logout}>
                 <i className='fa fa-sign-out-alt' />
                 Logout
             </li>

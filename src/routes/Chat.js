@@ -8,14 +8,10 @@ import SettingsModal from '../components/SettingsModal';
 import { actionCreators } from '../store/contacts';
 import { actionCreators as otherActionCreators } from '../store/other';
 import { actionCreators as userActionCreators } from '../store/user';
+import { actionCreators as miscActionCreators } from '../store/misc';
 import { setOther } from '../store/other';
 
 class Chat extends Component {
-  state = {
-    contactsActive: true,
-    requestedUsername: ''
-  }
-
   componentDidMount () {
     const {
       me,
@@ -32,7 +28,7 @@ class Chat extends Component {
       return;
     }
 
-    if (match.params.username) {
+    if (match.params.username && match.params.username !== 'settings') {
       setOther({ username: match.params.username });
       getConversation(match.params.username);
     }
@@ -42,10 +38,16 @@ class Chat extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.match.params.username !== this.props.match.params.username) {
-      nextProps.setOther({ username: nextProps.match.params.username });
-      nextProps.getConversation(nextProps.match.params.username);
+    const { username: newUsername } = nextProps.match.params
+
+    if (newUsername !== this.props.match.params.username && newUsername !== 'settings') {
+      nextProps.setOther({ username: newUsername });
+      nextProps.getConversation(newUsername);
     }
+  }
+
+  closeSettings = () => {
+    this.props.history.push('/chat');
   }
 
   render () {
@@ -55,7 +57,12 @@ class Chat extends Component {
       contacts,
       getContacts,
       markSeen,
+      search,
+      searchResult,
       sendMessage,
+      history,
+      addContact,
+      updateUserInfo,
       getConversation
     } = this.props
 
@@ -68,7 +75,10 @@ class Chat extends Component {
         <Contacts
           me={me}
           other={other}
-          notify={this.notify}
+          search={search}
+          navigate={history.push}
+          addContact={addContact}
+          searchResult={searchResult}
           contacts={contacts}
           getContacts={getContacts}
         />
@@ -79,14 +89,13 @@ class Chat extends Component {
           sendMessage={sendMessage}
           getConversation={getConversation} />
         <Route
-          exact
-          path='/settings'
+          path='/chat/settings'
           render={() => (
             <SettingsModal
-              notify={this.notify}
               isOpen={true}
               handleClose={this.closeSettings}
               me={me}
+              updateUserInfo={updateUserInfo}
             />
           )}>
         </Route>
@@ -94,22 +103,23 @@ class Chat extends Component {
     )
   }
 }
-const mapState = ({ user: me, other, contacts }) => {
-  console.log(other)
-  return {
-    me,
-    other: contacts && Object.values(contacts)
-      .find(contact => other.username === contact.username),
-    contacts
-  }
-}
+const mapState = ({ user: me, other, contacts, misc }) => ({
+  me,
+  contacts,
+  searchResult: misc.searchResult,
+  other: contacts && Object.values(contacts)
+    .find(contact => other.username === contact.username),
+});
 
 const mapDispatch = dispatch => ({
   setOther: data => dispatch(setOther(data)),
   ...bindActionCreators({
+    search: miscActionCreators.search,
+    updateUserInfo: userActionCreators.updateUserInfo,
     getConversation: otherActionCreators.getConversation,
     sendMessage: userActionCreators.sendMessage,
     markSeen: actionCreators.markSeen,
+    addContact: miscActionCreators.addContact,
     getContacts: actionCreators.getContacts,
     listenForNewMessages: actionCreators.listenForNewMessages,
     listenForMarkedSeen: actionCreators.listenForMarkedSeen

@@ -1,7 +1,11 @@
-import React, { PureComponent } from 'react'
-import classnames from 'classnames'
+import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 
-import './Toast.scss'
+import './Toast.scss';
+
+export const NotifyContext = React.createContext({
+  notify: () => { }
+});
 
 export default class Toast extends PureComponent {
   static defaultProps = {

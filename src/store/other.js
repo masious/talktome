@@ -23,9 +23,6 @@ export const setLastSeen = (userId, lastSeen) => ({
   }
 });
 
-export const setConversation = ({
-  type: types.CONVERSATION
-})
 
 export const actionCreators = {
   listenLastSeen: () => (dispatch, getState) => {
@@ -53,7 +50,6 @@ export const actionCreators = {
     if (!contacts || Object.keys(contacts).length === 0) {
       return;
     }
-    console.log(contacts);
 
     const contact = Object.values(contacts)
       .find(contact => contact.username === username)

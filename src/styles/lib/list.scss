@@ -1,0 +1,14 @@
+@import './helpers.scss';
+@import './variables.scss';
+
+.list {
+  list-style: none;
+}
+
+.list__item {
+  @extend .p;
+}
+
+.list__item:hover {
+  background-color: darken($secondary, 10%);
+}

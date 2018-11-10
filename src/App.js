@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import getUser from './utils/getUser';
-import logoutUser from './utils/logoutUser';
-import Header from './components/Header';
-import Toast from './lib/components/Toast';
+import Toast, { NotifyContext } from './lib/components/Toast';
 import Routes from './routes';
 
 import './App.scss';
-import './Home.scss';
 
 class App extends Component {
   constructor(props) {
@@ -15,9 +11,6 @@ class App extends Component {
     this.state = {
       isFocused: true,
     };
-
-    this.notify = this.notify.bind(this);
-    this.setToastRef = this.setToastRef.bind(this);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -46,11 +39,11 @@ class App extends Component {
     Notification.requestPermission();
   }
 
-  setToastRef (ref) {
+  setToastRef = ref => {
     this.toastRef = ref
   }
 
-  notify (message) {
+  notify = message => {
     if (this.state.isFocused) {
       this.toastRef.showMessage(message);
       return
@@ -68,8 +61,9 @@ class App extends Component {
   render () {
     return (
       <div className="container" id='container'>
-        <Header />
-        <Routes />
+        <NotifyContext.Provider value={{notify: this.notify}}>
+          <Routes />
+        </NotifyContext.Provider>
         <Toast onRef={this.setToastRef} />
       </div >
     );

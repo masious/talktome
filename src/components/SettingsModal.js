@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
 import Modal from '../lib/components/Modal';
 import Field from '../lib/components/Field';
-import saveUser from '../utils/saveUser';
+import SettingsAvatar from './SettingsAvatar';
+import { NotifyContext } from '../lib/components/Toast';
 import user from '../user.png';
 
 import './SettingsModal.scss';
-import SettingsAvatar from './SettingsAvatar';
 
 export default class SettingsModal extends Component {
+  static contextType = NotifyContext;
+
+  state = {
+    username: this.props.me.username,
+    password: this.props.me.password,
+    welcomeMessage: this.props.me.welcomeMessage
+  };
+
   constructor(props) {
     super(props);
-
-    this.state = {
-      username: this.props.me.data.username,
-      password: '',
-      welcomeMessage: this.props.me.data.welcomeMessage
-    }
 
     this.save = this.save.bind(this);
     this.changeAvatar = this.changeAvatar.bind(this);
@@ -32,19 +34,21 @@ export default class SettingsModal extends Component {
 
   changeAvatar (file) {
     this.props.me.changeAvatar(file)
-      .then(() => this.props.notify('Avatar changed successfully.'))
+      .then(() => this.context.notify('Avatar changed successfully.'))
   }
 
   save () {
-    this.props.me.updateUserInfo(this.state)
-      .then(user => {
-        saveUser(user)
-        this.props.notify('Changes saved successfully.')
+    this.props.updateUserInfo(this.state)
+      .then(() => {
+        this.context.notify('Changes saved successfully.')
         this.props.handleClose()
       })
   }
 
   render () {
+    if (!this.props.me) {
+      return null;
+    }
     return (
       <Modal
         title='Edit Profile'
@@ -60,13 +64,13 @@ export default class SettingsModal extends Component {
         <div className='settings'>
           <SettingsAvatar
             onChange={this.changeAvatar}
-            src={this.props.me.data.photoUrl || user} />
+            src={this.props.me.photoUrl || user} />
           <form className='settings__form form--vertical'>
             <Field
               label='Username'
               type='text'
               onChange={this.changeUsername}
-              value={this.state.username} />
+              defaultValue={this.props.me.username} />
             <Field
               label='Password'
               type='password'

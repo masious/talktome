@@ -5,6 +5,8 @@ import Signup from '../containers/Signup';
 import Login from '../containers/Login';
 import screenshot from '../shot.png';
 
+import './Home.scss';
+
 class Home extends Component {
   componentDidMount () {
     this.checkRedirection(this.props.isLoggedIn)

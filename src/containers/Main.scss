@@ -79,9 +79,6 @@
   overflow: hidden;
 }
 
-.message__avatar img {
-}
-
 .message--other .message__avatar {
   margin-right: $gutter / 2;
 }
@@ -145,7 +142,7 @@
   font-size: 1.6rem;
   text-align: center;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 0;
   cursor: pointer;
 }
 

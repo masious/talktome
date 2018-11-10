@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import FindContactModal from './FindContactModal';
+import { NotifyContext } from '../lib/components/Toast';
+import Contact from './Contact';
 
 import './Contacts.scss';
-import Contact from './Contact';
 
 const contactSorter = contacts => (aId, bId) => {
   const a = contacts[aId];
   const b = contacts[bId];
-  const aDate = a.lastMessage && a.lastMessage.receivedAt;
-  const bDate = b.lastMessage && b.lastMessage.receivedAt;
+
+  const aLastMessage = a.messages
+    && a.messages.length > 0
+    && a.messages[a.messages.length - 1]
+  const bLastMessage = b.messages
+    && b.messages.length > 0
+    && b.messages[b.messages.length - 1]
+
+  const aDate = aLastMessage && aLastMessage.receivedAt;
+  const bDate = bLastMessage && bLastMessage.receivedAt;
 
   if (aDate && !bDate) {
     return -1;
@@ -23,6 +32,8 @@ const contactSorter = contacts => (aId, bId) => {
 const newMessageSound = new Audio('/pop.mp3');
 
 export default class Contacts extends Component {
+  static contextType = NotifyContext;
+
   constructor(props) {
     super(props)
 
@@ -36,10 +47,14 @@ export default class Contacts extends Component {
   }
 
   addContact (userId) {
-    this.props.me.addContact(userId)
+    this.props.addContact(userId)
       .then(user => {
-        this.props.notify(`${user.username} added to contacts.`)
-      })
+        this.context.notify(`${user.username} added to contacts.`)
+      });
+  }
+
+  openConversation = contact => {
+    this.props.navigate(`/chat/${contact.username}`);
   }
 
   changeFindModalState (state) {
@@ -72,6 +87,7 @@ export default class Contacts extends Component {
             .sort(contactSorter(this.props.contacts))
             .map((contactId, index) => (
               <Contact
+                onClick={this.openConversation}
                 key={index}
                 contact={this.props.contacts[contactId]}
                 isActive={this.props.other === this.props.contacts[contactId]} />
@@ -80,7 +96,8 @@ export default class Contacts extends Component {
         <FindContactModal
           isOpen={this.state.isFindModalOpen}
           onAdd={this.addContact}
-          me={this.props.me}
+          search={this.props.search}
+          searchResult={this.props.searchResult}
           handleClose={this.closeFindModal} />
       </aside>
     )

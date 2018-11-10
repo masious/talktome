@@ -1,0 +1,17 @@
+@import '../styles/index.scss';
+
+.find__avatar {
+  @extend .shadowed;
+
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  overflow: hidden;
+  margin-right: $gutter;
+  vertical-align: middle;
+}
+
+// .find__list {
+//   display: flex;
+//   flex-direction: column;
+// }

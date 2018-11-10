@@ -4,6 +4,7 @@ import { types as otherTypes } from './other';
 
 const types = {
   GET_CONTACTS: 'GET_CONTACTS',
+  ADD_CONTACT: 'ADD_CONTACT',
   UPDATE_CONTACT: 'UPDATE_CONTACT'
 };
 
@@ -15,7 +16,12 @@ const setContacts = contacts => ({
 export const updateContact = contact => ({
   type: types.UPDATE_CONTACT,
   payload: contact
-})
+});
+
+export const addContact = contact => ({
+  type: types.ADD_CONTACT,
+  payload: contact
+});
 
 export const actionCreators = {
   getContacts: () => (dispatch, getState) => {
@@ -74,27 +80,31 @@ export const actionCreators = {
       const messages = [...contact.messages];
       messages.push(message);
 
-      dispatch(updateContact({ ...contact, messages }));
-      console.log('last');
+      const newContact = {
+        ...contact,
+        unreadCount: contact.unreadCount ? contact.unreadCount + 1 : 1
+      };
+
+      dispatch(updateContact({ ...newContact, messages }));
     });
   },
 
   listenForMarkedSeen: () => (dispatch, getState) => {
     const { jwt } = getState().user
-
-    listen(jwt)
+    listen(jwt);
     addListener('marked seen', message => {
-      const contactId = message.isSent ?
+      const { id } = getState().user;
+
+      const contactId = message.sender === id ?
         message.receiver :
         message.sender;
 
       const { contacts } = getState();
-
       const contact = contacts[contactId];
       const messages = [...contact.messages];
 
       const messageIndex = messages
-        .findIndex(msg => msg._id === message.id);
+        .findIndex(msg => msg._id === message._id);
 
       delete messages[messageIndex];
       messages.push(message)
@@ -148,6 +158,12 @@ export function reducer (state = initialState, { type, payload }) {
           ...state[payload.userId],
           lastSeen: payload.lastSeen
         }
+      }
+    }
+    case types.ADD_CONTACT: {
+      return {
+        ...state,
+        [payload._id]: payload
       }
     }
     default: {

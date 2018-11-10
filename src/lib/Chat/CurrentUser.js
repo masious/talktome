@@ -28,19 +28,12 @@ export default class CurrentUser extends User {
     })
   }
 
-  addContact (userId) {
+  static addContact (jwt, userId) {
     return CurrentUser.post('/users/add-contact', { userId }, {
       headers: {
-        'Authorization': `Bearer ${this.data.jwt}`
+        'Authorization': `Bearer ${jwt}`
       },
     })
-      .then(user => {
-        if (!this.data.contacts) {
-          this.data.contacts = []
-        }
-        this.data.contacts.push(user)
-        return user
-      })
   }
 
   static getConversation (jwt, userId) {
@@ -57,11 +50,6 @@ export default class CurrentUser extends User {
         'Authorization': `Bearer ${this.data.jwt}`
       }
     })
-      .then(userData => {
-        this.data.username = userData.username;
-        this.data.welcomeMessage = userData.welcomeMessage
-        return this
-      })
   }
 
   changeAvatar (file) {
@@ -77,11 +65,11 @@ export default class CurrentUser extends User {
     })
   }
 
-  search (username) {
+  static search (jwt, username) {
     return User.get(`/users/search?q=${username}`, {
       headers: {
-        'Authorization': `Bearer ${this.data.jwt}`
+        'Authorization': `Bearer ${jwt}`
       }
-    }).then(usersData => usersData.map(userData => new User(userData)));
+    })
   }
 }

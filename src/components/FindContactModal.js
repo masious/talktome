@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
-import AsyncSelect from 'react-select/lib/Async';
+import React, { Component } from 'react';
 import Modal from '../lib/components/Modal';
+import userImg from '../user.png';
+
+import './FindContactModal.scss';
+import Contact from './Contact';
 
 export default class FindContactModal extends Component {
   constructor(props) {
@@ -14,22 +17,12 @@ export default class FindContactModal extends Component {
     this.searchContacts = this.searchContacts.bind(this);
   }
 
-  searchContacts (username, callback) {
-    this.props.me.search(username)
-      .then(users => {
-        callback(users.map(user => ({
-          label: user.data.username,
-          value: user.data._id
-        })))
-      })
+  searchContacts = ({ target }) => {
+    this.props.search(target.value)
   }
 
-  addContact (option, { action }) {
-    if (action !== 'select-option') {
-      return
-    }
-
-    this.props.onAdd(option.value)
+  addContact (user) {
+    this.props.onAdd(user._id)
   }
 
   render () {
@@ -38,12 +31,30 @@ export default class FindContactModal extends Component {
         title='Find Contacts'
         isOpen={this.props.isOpen}
         onRequestClose={this.props.handleClose}>
-        <AsyncSelect
-          cacheOptions
-          loadOptions={this.searchContacts}
-          placeholder='Search Usernames...'
-          onChange={this.addContact}
-          onInputChange={this.handleInputChange} />
+        <div className='field__input-wrapper'>
+          <i className='p fa fa-search' />
+          <input
+            type='text'
+            onChange={this.searchContacts}
+            placeholder='Search usernames...' />
+        </div>
+        <ul className='list find__list'>
+          {this.props.searchResult.map(user => (
+            <Contact
+              contact={user}
+              onClick={this.addContact}
+              extra={{message: user.welcomeMessage, date: user.lastSeen}}
+              key={user._id} />
+            // <li className='list__item find__item' key={user._id}>
+            //   <div className='find__avatar'>
+            //     <img src={user.photoUrl || userImg} />
+            //   </div>
+            //   <span>
+            //     {user.username}
+            //   </span>
+            // </li>
+          ))}
+        </ul>
       </Modal>
     )
   }

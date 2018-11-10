@@ -68,6 +68,15 @@ export const actionCreators = {
 
         dispatch(updateContact({ ...contact, messages: [...messages] }));
       })
+  },
+  updateUserInfo: data => (dispatch, getState) => {
+    const { jwt } = getState().user;
+
+    return CurrentUser.post('/users/update', data, {
+      headers: {
+        'Authorization': `Bearer ${jwt}`
+      }
+    }).then(userInfo => dispatch(setUser(userInfo)))
   }
 }
 
