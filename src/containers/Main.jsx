@@ -93,6 +93,7 @@ export default class Main extends Component {
     }));
 
     const newMessage = {
+      _id: Math.floor(Math.random() * 100),
       body: draftMessage.trim(),
       sender: me.id,
       receiver: other._id,
@@ -138,7 +139,7 @@ export default class Main extends Component {
                 {other.messages
                   && other.messages.map((message, index) => (
                     <div
-                      key={`${message._id}${index}`}
+                      key={`${message._id}`}
                       ref={other.messages.length - 1 === index && this.setLastMessageRef}
                       className={classnames(
                         'message',
