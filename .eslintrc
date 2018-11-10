@@ -1,0 +1,17 @@
+{
+  "extends": ["airbnb"],
+  "parser": "babel-eslint",
+  "globals": {
+    "window": true,
+    "document": true,
+    "Notification": true,
+    "localStorage": true,
+    "Audio": true,
+    "FormData": true,
+    "navigator": true,
+    "fetch": true
+  },
+  "rules": {
+    "no-underscore-dangle": 0
+  }
+}

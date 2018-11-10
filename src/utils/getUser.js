@@ -1,9 +1,9 @@
-import CurrentUser from '../lib/Chat/CurrentUser'
+import CurrentUser from '../lib/Chat/CurrentUser';
 
-export default function getUser () {
-  const userStr = localStorage.getItem('user')
+export default function getUser() {
+  const userStr = localStorage.getItem('user');
   if (!userStr) {
-    return null
+    return null;
   }
 
   const userData = JSON.parse(userStr);

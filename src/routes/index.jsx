@@ -5,16 +5,16 @@ import Home from './Home';
 import Chat from './Chat';
 
 export default class Routes extends Component {
-  render () {
+  render() {
     return (
       <Router>
         <div className="app">
-          <Header/>
-          <Route path='/' exact component={Home} />
-          <Route path='/contacts' exact component={Chat} />
-          <Route path='/chat/:username?' exact component={Chat} />
+          <Header />
+          <Route path="/" exact component={Home} />
+          <Route path="/contacts" exact component={Chat} />
+          <Route path="/chat/:username?" exact component={Chat} />
         </div>
       </Router>
-    )
+    );
   }
 }

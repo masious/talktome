@@ -6,25 +6,25 @@ import TimeAgo from '../lib/components/TimeAgo';
 
 export default class Contact extends Component {
   onClick = () => {
-    const { onClick, contact } = this.props
-    
-    onClick(contact)
+    const { onClick, contact } = this.props;
+
+    onClick(contact);
   }
 
-  render () {
+  render() {
     const {
       contact,
       extra,
-      isActive
-    } = this.props
+      isActive,
+    } = this.props;
 
     const lastMessage = contact.messages
       && contact.messages.length > 0
-      && contact.messages[contact.messages.length - 1]
+      && contact.messages[contact.messages.length - 1];
 
     const secondary = extra || (lastMessage && {
       message: lastMessage.body,
-      date: lastMessage.receivedAt
+      date: lastMessage.receivedAt,
     });
 
     return (
@@ -32,37 +32,40 @@ export default class Contact extends Component {
         onClick={this.onClick}
         className={classnames(
           'contacts__contact',
-          isActive && 'contact--active'
-        )}>
-        <div className='contact__avatar'>
-          <div className='avatar__img-wrapper'>
+          isActive && 'contact--active',
+        )}
+      >
+        <div className="contact__avatar">
+          <div className="avatar__img-wrapper">
             <img
               src={contact.photoUrl || user}
-              alt='user avatar'
-              className='avatar__img' />
+              alt="user avatar"
+              className="avatar__img"
+            />
           </div>
           {!!contact.unreadCount && (
-            <div className='contact__badge'>
+            <div className="contact__badge">
               {contact.unreadCount}
             </div>
           )}
         </div>
-        <div className='contact__info'>
-          <div className='contact__username'>
+        <div className="contact__info">
+          <div className="contact__username">
             {contact.username}
           </div>
           {secondary && (
-            <div className='contact__message'>
-              <div className='contact__body'>
+            <div className="contact__message">
+              <div className="contact__body">
                 {secondary.message}
               </div>
-              <TimeAgo className='contact__time'>
+              <TimeAgo className="contact__time">
                 {secondary.date}
-              </TimeAgo>&nbsp;ago
-                  </div>
+              </TimeAgo>
+&nbsp;ago
+            </div>
           )}
         </div>
       </li>
-    )
+    );
   }
 }

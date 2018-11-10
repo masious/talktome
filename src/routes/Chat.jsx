@@ -12,7 +12,7 @@ import { actionCreators as miscActionCreators } from '../store/misc';
 import { setOther } from '../store/other';
 
 class Chat extends Component {
-  componentDidMount () {
+  componentDidMount() {
     const {
       me,
       history,
@@ -20,8 +20,8 @@ class Chat extends Component {
       setOther,
       getConversation,
       listenForMarkedSeen,
-      listenForNewMessages
-    } = this.props
+      listenForNewMessages,
+    } = this.props;
 
     if (!me.username) {
       history.push('/');
@@ -37,8 +37,8 @@ class Chat extends Component {
     listenForNewMessages();
   }
 
-  componentWillReceiveProps (nextProps) {
-    const { username: newUsername } = nextProps.match.params
+  componentWillReceiveProps(nextProps) {
+    const { username: newUsername } = nextProps.match.params;
 
     if (newUsername !== this.props.match.params.username && newUsername !== 'settings') {
       nextProps.setOther({ username: newUsername });
@@ -50,7 +50,7 @@ class Chat extends Component {
     this.props.history.push('/chat');
   }
 
-  render () {
+  render() {
     const {
       me,
       other,
@@ -63,11 +63,11 @@ class Chat extends Component {
       history,
       addContact,
       updateUserInfo,
-      getConversation
-    } = this.props
+      getConversation,
+    } = this.props;
 
     if (!me.username) {
-      return null
+      return null;
     }
 
     return (
@@ -87,23 +87,26 @@ class Chat extends Component {
           other={other}
           markSeen={markSeen}
           sendMessage={sendMessage}
-          getConversation={getConversation} />
+          getConversation={getConversation}
+        />
         <Route
-          path='/chat/settings'
+          path="/chat/settings"
           render={() => (
             <SettingsModal
-              isOpen={true}
+              isOpen
               handleClose={this.closeSettings}
               me={me}
               updateUserInfo={updateUserInfo}
             />
-          )}>
-        </Route>
+          )}
+        />
       </Fragment>
-    )
+    );
   }
 }
-const mapState = ({ user: me, other, contacts, misc }) => ({
+const mapState = ({
+  user: me, other, contacts, misc,
+}) => ({
   me,
   contacts,
   searchResult: misc.searchResult,
@@ -122,7 +125,7 @@ const mapDispatch = dispatch => ({
     addContact: miscActionCreators.addContact,
     getContacts: actionCreators.getContacts,
     listenForNewMessages: actionCreators.listenForNewMessages,
-    listenForMarkedSeen: actionCreators.listenForMarkedSeen
+    listenForMarkedSeen: actionCreators.listenForMarkedSeen,
   }, dispatch),
 });
 

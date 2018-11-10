@@ -7,44 +7,47 @@ import Contact from './Contact';
 
 export default class FindContactModal extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      users: []
-    }
+      users: [],
+    };
 
     this.addContact = this.addContact.bind(this);
     this.searchContacts = this.searchContacts.bind(this);
   }
 
   searchContacts = ({ target }) => {
-    this.props.search(target.value)
+    this.props.search(target.value);
   }
 
-  addContact (user) {
-    this.props.onAdd(user._id)
+  addContact(user) {
+    this.props.onAdd(user._id);
   }
 
-  render () {
+  render() {
     return (
       <Modal
-        title='Find Contacts'
+        title="Find Contacts"
         isOpen={this.props.isOpen}
-        onRequestClose={this.props.handleClose}>
-        <div className='field__input-wrapper'>
-          <i className='p fa fa-search' />
+        onRequestClose={this.props.handleClose}
+      >
+        <div className="field__input-wrapper">
+          <i className="p fa fa-search" />
           <input
-            type='text'
+            type="text"
             onChange={this.searchContacts}
-            placeholder='Search usernames...' />
+            placeholder="Search usernames..."
+          />
         </div>
-        <ul className='list find__list'>
+        <ul className="list find__list">
           {this.props.searchResult.map(user => (
             <Contact
               contact={user}
               onClick={this.addContact}
-              extra={{message: user.welcomeMessage, date: user.lastSeen}}
-              key={user._id} />
+              extra={{ message: user.welcomeMessage, date: user.lastSeen }}
+              key={user._id}
+            />
             // <li className='list__item find__item' key={user._id}>
             //   <div className='find__avatar'>
             //     <img src={user.photoUrl || userImg} />
@@ -56,6 +59,6 @@ export default class FindContactModal extends Component {
           ))}
         </ul>
       </Modal>
-    )
+    );
   }
 }

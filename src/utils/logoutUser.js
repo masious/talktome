@@ -1,3 +1,3 @@
-export default function logoutUser () {
-  localStorage.removeItem('user')
+export default function logoutUser() {
+  localStorage.removeItem('user');
 }

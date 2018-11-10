@@ -13,44 +13,46 @@ class App extends Component {
     };
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    if (nextState.isFocused !== this.state.isFocused) {
-      return false
-    }
-    return true
-  }
-
-  componentDidMount () {
+  componentDidMount() {
     window.onfocus = () => {
       this.setState({
-        isFocused: true
+        isFocused: true,
       });
     };
     window.onblur = () => {
       this.setState({
-        isFocused: false
-      })
-    }
+        isFocused: false,
+      });
+    };
 
     if (!('Notification' in window)) {
-      return
+      return;
     }
 
     Notification.requestPermission();
   }
 
-  setToastRef = ref => {
-    this.toastRef = ref
+  shouldComponentUpdate(nextProps, nextState) {
+    const { isFocused } = this.state;
+    if (nextState.isFocused !== isFocused) {
+      return false;
+    }
+    return true;
   }
 
-  notify = message => {
-    if (this.state.isFocused) {
+  setToastRef = (ref) => {
+    this.toastRef = ref;
+  }
+
+  notify = (message) => {
+    const { isFocused } = this.state;
+    if (isFocused) {
       this.toastRef.showMessage(message);
-      return
+      return;
     }
 
     if (!('Notification' in window)) {
-      return
+      this.toastRef.showMessage(message);
     } else if (Notification.permission === 'granted') {
       new Notification(message);
     } else if (Notification.permission !== 'denied') {
@@ -58,14 +60,14 @@ class App extends Component {
     }
   }
 
-  render () {
+  render() {
     return (
-      <div className="container" id='container'>
-        <NotifyContext.Provider value={{notify: this.notify}}>
+      <div className="container" id="container">
+        <NotifyContext.Provider value={{ notify: this.notify }}>
           <Routes />
         </NotifyContext.Provider>
         <Toast onRef={this.setToastRef} />
-      </div >
+      </div>
     );
   }
 }

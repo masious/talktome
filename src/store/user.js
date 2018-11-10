@@ -1,116 +1,114 @@
-import CurrentUser from "../lib/Chat/CurrentUser";
-import { listen, emit } from "../lib/Chat/User";
-import { updateContact } from "./contacts";
+import CurrentUser from '../lib/Chat/CurrentUser';
+import { listen, emit } from '../lib/Chat/User';
+import { updateContact } from './contacts';
 
 const types = {
-  USER: 'USER'
-}
+  USER: 'USER',
+};
 
 const setUser = ({
   _id: id,
   username,
   welcomeMessage,
   photoUrl,
-  jwt
+  jwt,
 }) => ({
   type: types.USER,
-  payload: { id, username, welcomeMessage, photoUrl, jwt }
+  payload: {
+    id, username, welcomeMessage, photoUrl, jwt,
+  },
 });
 
-export const unsetUser = () => {
-  return setUser({})
-}
+export const unsetUser = () => setUser({});
 
 export const actionCreators = {
-  login: ({ username, password }) => dispatch => {
-    return CurrentUser.login({ username, password })
-      .then(user => dispatch(setUser(user)));
-  },
+  login: ({ username, password }) => dispatch => CurrentUser.login({ username, password })
+    .then(user => dispatch(setUser(user))),
 
   signup: ({
     username,
     welcomeMessage,
     photoUrl,
     jwt,
-    password
-  }) => dispatch => {
-    return CurrentUser.signup({
-      username,
-      welcomeMessage,
-      photoUrl,
-      jwt,
-      password
-    })
-      .then(user => dispatch(setUser(user)));
-  },
+    password,
+  }) => dispatch => CurrentUser.signup({
+    username,
+    welcomeMessage,
+    photoUrl,
+    jwt,
+    password,
+  })
+    .then(user => dispatch(setUser(user))),
 
   sendMessage: message => (dispatch, getState) => {
     const {
       user: {
-        jwt
+        jwt,
       },
       contacts: {
-        [message.receiver]: contact
-      }
+        [message.receiver]: contact,
+      },
     } = getState();
 
     const messages = [...contact.messages];
     messages.push(message);
-    dispatch(updateContact({ ...contact, messages }))
+    dispatch(updateContact({ ...contact, messages }));
 
     listen(jwt);
     emit('chat message',
       { body: message.body, receiverId: message.receiver },
-      messageFromServer => {
-        delete message.isPending
+      (messageFromServer) => {
+        /* eslint-disable no-param-reassign */
+        delete message.isPending;
         message._id = messageFromServer._id;
         message.receivedAt = messageFromServer.receivedAt;
+        /* eslint-enable no-param-reassign */
 
         dispatch(updateContact({ ...contact, messages: [...messages] }));
-      })
+      });
   },
   updateUserInfo: data => (dispatch, getState) => {
     const { jwt } = getState().user;
 
     return CurrentUser.post('/users/update', data, {
       headers: {
-        'Authorization': `Bearer ${jwt}`
-      }
-    }).then(userInfo => dispatch(setUser(userInfo)))
-  }
-}
+        Authorization: `Bearer ${jwt}`,
+      },
+    }).then(userInfo => dispatch(setUser(userInfo)));
+  },
+};
 
-export const persistMiddleware = store => next => action => {
+export const persistMiddleware = () => next => (action) => {
   if (action.type === types.USER) {
-    localStorage.setItem('user', JSON.stringify(action.payload))
+    localStorage.setItem('user', JSON.stringify(action.payload));
   }
 
   next(action);
-}
+};
 
 let user;
 const userFromLocalStorage = localStorage.getItem('user');
 if (userFromLocalStorage) {
   user = JSON.parse(userFromLocalStorage);
-};
+}
 
 const initialState = user || {
   id: null,
   username: '',
   welcomeMessage: '',
   photoUrl: '',
-  jwt: ''
+  jwt: '',
 };
 
-export function reducer (state = initialState, { type, payload }) {
+export function reducer(state = initialState, { type, payload }) {
   switch (type) {
     case types.USER: {
       return {
-        ...payload
-      }
+        ...payload,
+      };
     }
     default: {
       return state;
     }
   }
-};
+}

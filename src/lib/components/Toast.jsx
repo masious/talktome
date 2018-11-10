@@ -4,46 +4,46 @@ import classnames from 'classnames';
 import './Toast.scss';
 
 export const NotifyContext = React.createContext({
-  notify: () => { }
+  notify: () => { },
 });
 
 export default class Toast extends PureComponent {
   static defaultProps = {
-    duration: 3000
+    duration: 3000,
   }
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       active: false,
-      message: ''
-    }
+      message: '',
+    };
 
     this.props.onRef({
-      showMessage: message => {
+      showMessage: (message) => {
         this.setState({
           message,
-          active: true
-        })
+          active: true,
+        });
 
         setTimeout(() => {
           this.setState({
             message: '',
-            active: false
-          })
-        }, this.props.duration)
-      }
-    })
+            active: false,
+          });
+        }, this.props.duration);
+      },
+    });
   }
 
-  render () {
-    const { active, message } = this.state
+  render() {
+    const { active, message } = this.state;
 
     return (
       <div className={classnames('toast', active && 'toast--active')}>
         {message}
       </div>
-    )
+    );
   }
 }

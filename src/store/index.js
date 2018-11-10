@@ -2,7 +2,7 @@ import {
   createStore,
   combineReducers,
   applyMiddleware,
-  compose
+  compose,
 } from 'redux';
 import thunk from 'redux-thunk';
 import { reducer as user, persistMiddleware } from './user';
@@ -15,19 +15,17 @@ const reducer = combineReducers({
   user,
   contacts,
   other,
-  misc
+  misc,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default () => {
-  return createStore(
-    reducer,
-    composeEnhancers(
-      applyMiddleware(
-        thunk,
-        persistMiddleware
-      )
-    )
-  );
-};
+export default () => createStore(
+  reducer,
+  composeEnhancers(
+    applyMiddleware(
+      thunk,
+      persistMiddleware,
+    ),
+  ),
+);
