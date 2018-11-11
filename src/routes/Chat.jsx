@@ -50,10 +50,9 @@ class Chat extends Component {
     let url = '/chat';
 
     const { other, history } = this.props;
-    const { username } = other;
 
-    if (other && username) {
-      url += `/${username}`;
+    if (other && other.username) {
+      url += `/${other.username}`;
     }
     history.push(url);
   }
@@ -71,6 +70,7 @@ class Chat extends Component {
       history,
       addContact,
       updateUserInfo,
+      changeAvatar,
       getConversation,
     } = this.props;
 
@@ -105,6 +105,7 @@ class Chat extends Component {
               handleClose={this.closeSettings}
               me={me}
               updateUserInfo={updateUserInfo}
+              changeAvatar={changeAvatar}
             />
           )}
         />
@@ -127,6 +128,7 @@ const mapDispatch = dispatch => ({
   ...bindActionCreators({
     search: miscActionCreators.search,
     updateUserInfo: userActionCreators.updateUserInfo,
+    changeAvatar: userActionCreators.changeAvatar,
     getConversation: otherActionCreators.getConversation,
     sendMessage: userActionCreators.sendMessage,
     markSeen: actionCreators.markSeen,

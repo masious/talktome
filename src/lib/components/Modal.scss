@@ -14,7 +14,7 @@
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   top: 50%;
-  right: 0;
+  
   background: $white;
   display: flex;
   flex-direction: column;
@@ -39,6 +39,7 @@
 
   flex: 1;
   background-color: $secondary;
+  overflow-y: auto;
 }
 
 .modal__footer {

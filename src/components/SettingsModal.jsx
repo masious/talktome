@@ -19,11 +19,28 @@ export default class SettingsModal extends Component {
   constructor(props) {
     super(props);
 
-    this.save = this.save.bind(this);
-    this.changeAvatar = this.changeAvatar.bind(this);
     this.changeUsername = this.changeField.bind(this, 'username');
     this.changePassword = this.changeField.bind(this, 'password');
     this.changeWelcomeMessage = this.changeField.bind(this, 'welcomeMessage');
+  }
+
+  changeAvatar = (file) => {
+    const { changeAvatar } = this.props;
+    const { notify } = this.context;
+
+    changeAvatar(file)
+      .then(() => notify('Avatar changed successfully.'));
+  }
+
+  save = () => {
+    const { updateUserInfo, handleClose } = this.props;
+    const { notify } = this.context;
+
+    updateUserInfo(this.state)
+      .then(() => {
+        notify('Changes saved successfully.');
+        handleClose();
+      });
   }
 
   changeField(fieldName, value) {
@@ -32,21 +49,14 @@ export default class SettingsModal extends Component {
     });
   }
 
-  changeAvatar(file) {
-    this.props.me.changeAvatar(file)
-      .then(() => this.context.notify('Avatar changed successfully.'));
-  }
-
-  save() {
-    this.props.updateUserInfo(this.state)
-      .then(() => {
-        this.context.notify('Changes saved successfully.');
-        this.props.handleClose();
-      });
-  }
-
   render() {
-    if (!this.props.me) {
+    const {
+      me,
+      handleClose,
+      isOpen,
+    } = this.props;
+
+    if (!me) {
       return null;
     }
     return (
@@ -57,35 +67,35 @@ export default class SettingsModal extends Component {
           onClick: this.save,
         }, {
           title: 'Cancel',
-          onClick: this.props.handleClose,
+          onClick: handleClose,
         }]}
-        isOpen={this.props.isOpen}
-        onRequestClose={this.props.handleClose}
+        isOpen={isOpen}
+        onRequestClose={handleClose}
       >
         <div className="settings">
           <SettingsAvatar
             onChange={this.changeAvatar}
-            src={this.props.me.photoUrl || user}
+            src={me.photoUrl || user}
           />
           <form className="settings__form form--vertical">
             <Field
               label="Username"
               type="text"
               onChange={this.changeUsername}
-              defaultValue={this.props.me.username}
+              defaultValue={me.username}
             />
             <Field
               label="Password"
               type="password"
               placeholder="(unchanged)"
               onChange={this.changePassword}
-              value={this.state.password}
+              defaultValue={me.password}
             />
             <Field
               label="Welcome Message"
               type="text"
               onChange={this.changeWelcomeMessage}
-              value={this.state.welcomeMessage}
+              defaultValue={me.welcomeMessage}
             />
           </form>
         </div>

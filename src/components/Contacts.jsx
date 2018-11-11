@@ -45,17 +45,22 @@ export default class Contacts extends Component {
     this.closeFindModal = this.changeFindModalState.bind(this, false);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { getContacts } = this.props;
     getContacts();
   }
 
-  openConversation = (contact) => {
+  openConversation = ({ username }) => {
     const { navigate } = this.props;
-    navigate(`/chat/${contact.username}`);
+    let url = '/chat';
+    if (username) {
+      url += `/${username}`;
+    }
+
+    navigate(url);
   }
 
-  addContact (userId) {
+  addContact(userId) {
     const { addContact } = this.props;
     const { notify } = this.context;
     addContact(userId)
@@ -64,13 +69,13 @@ export default class Contacts extends Component {
       });
   }
 
-  changeFindModalState (state) {
+  changeFindModalState(state) {
     this.setState({
       isFindModalOpen: state,
     });
   }
 
-  render () {
+  render() {
     const {
       other,
       contacts,
@@ -88,7 +93,7 @@ export default class Contacts extends Component {
     return (
       <aside className={classnames('app__contacts', activeClass)}>
         <header className="contacts__header">
-          <div className="contacts__title">
+          <div className="contacts__title" onClick={this.openConversation}>
             Contacts
           </div>
           <button className="contacts__find" type="button" onClick={this.openFindModal}>

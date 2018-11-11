@@ -70,6 +70,7 @@ export const actionCreators = {
         dispatch(updateContact({ ...contact, messages }));
       });
   },
+
   updateUserInfo: data => (dispatch, getState) => {
     const { jwt } = getState().user;
 
@@ -78,6 +79,13 @@ export const actionCreators = {
         Authorization: `Bearer ${jwt}`,
       },
     }).then(userInfo => dispatch(setUser(userInfo)));
+  },
+
+  changeAvatar: file => (dispatch, getState) => {
+    const { user } = getState();
+
+    return CurrentUser.changeAvatar(user.jwt, file)
+      .then(({ photoUrl }) => dispatch(setUser({ ...user, photoUrl })));
   },
 };
 

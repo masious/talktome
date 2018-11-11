@@ -52,16 +52,13 @@ export default class CurrentUser extends User {
     });
   }
 
-  changeAvatar(file) {
+  static changeAvatar(jwt, file) {
     const formData = new FormData();
     formData.append('avatar', file, 'avatar');
     return CurrentUser.post('/users/avatar', formData, {
       headers: {
-        Authorization: `Bearer ${this.data.jwt}`,
+        Authorization: `Bearer ${jwt}`,
       },
-    }).then(({ photoUrl }) => {
-      this.data.photoUrl = photoUrl;
-      return photoUrl;
     });
   }
 

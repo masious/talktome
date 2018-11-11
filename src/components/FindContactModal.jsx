@@ -48,14 +48,6 @@ export default class FindContactModal extends Component {
               extra={{ message: user.welcomeMessage, date: user.lastSeen }}
               key={user._id}
             />
-            // <li className='list__item find__item' key={user._id}>
-            //   <div className='find__avatar'>
-            //     <img src={user.photoUrl || userImg} />
-            //   </div>
-            //   <span>
-            //     {user.username}
-            //   </span>
-            // </li>
           ))}
         </ul>
       </Modal>

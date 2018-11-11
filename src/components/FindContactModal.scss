@@ -11,7 +11,7 @@
   vertical-align: middle;
 }
 
-// .find__list {
-//   display: flex;
-//   flex-direction: column;
-// }
+.find__list {
+  max-height: 60vh;
+  overflow-y: auto;
+}
