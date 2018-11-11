@@ -42,18 +42,10 @@ export const actionCreators = {
       user: {
         jwt,
       },
-      contacts,
     } = getState();
 
-    if (!contacts || Object.keys(contacts).length === 0) {
-      return;
-    }
-
-    const contact = Object.values(contacts)
-      .find(user => user.username === username);
-
     CurrentUser.getConversation(jwt, username)
-      .then(({ messages }) => dispatch(updateContact({ ...contact, messages })));
+      .then(contact => dispatch(updateContact(contact)));
   },
 };
 

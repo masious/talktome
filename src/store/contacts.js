@@ -29,36 +29,10 @@ export const actionCreators = {
       user: {
         jwt,
       },
-      contacts: previousContacts,
     } = getState();
 
     return CurrentUser.getContacts(jwt)
-      .then((contacts) => {
-        if (!previousContacts || Object.keys(previousContacts).length === 0) {
-          dispatch(setContacts(contacts));
-          return;
-        }
-        Object.keys(contacts)
-          .forEach((contactId) => {
-            const { messages } = contacts[contactId];
-            previousContacts[contactId].messages
-              .forEach((message) => {
-                const alreadyExists = messages
-                  .some(({ _id }) => _id === message._id);
-
-                if (!alreadyExists) {
-                  messages.push(message);
-                }
-              });
-            messages.sort((a, b) => {
-              const aDate = new Date(a.receivedAt);
-              const bDate = new Date(b.receivedAt);
-
-              return aDate - bDate;
-            });
-          });
-        dispatch(setContacts(contacts));
-      });
+      .then(contacts => dispatch(setContacts(contacts)));
   },
 
   listenForNewMessages: () => (dispatch, getState) => {
@@ -81,10 +55,11 @@ export const actionCreators = {
 
       const newContact = {
         ...contact,
+        messages,
         unreadCount: contact.unreadCount ? contact.unreadCount + 1 : 1,
       };
 
-      dispatch(updateContact({ ...newContact, messages }));
+      dispatch(updateContact(newContact));
     });
   },
 
@@ -105,8 +80,11 @@ export const actionCreators = {
       const messageIndex = messages
         .findIndex(({ _id }) => _id === message._id);
 
-      delete messages[messageIndex];
-      messages.push(message);
+      if (messageIndex < 0) {
+        return;
+      }
+
+      messages[messageIndex].isSeen = true;
 
       dispatch(updateContact({ ...contact, messages }));
     });
@@ -142,6 +120,8 @@ export function reducer(state = initialState, { type, payload }) {
     case types.GET_CONTACTS: {
       return {
         ...payload,
+        ...state, // What we already have in the store,
+        // is more valid than what is dispatched.
       };
     }
     case types.UPDATE_CONTACT: {

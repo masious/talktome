@@ -11,7 +11,6 @@ class Signup extends Component {
   }
 
   render() {
-    console.log(this.props.signup);
     return (
       <SignupForm
         onSubmit={this.props.signup}

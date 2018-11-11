@@ -29,6 +29,33 @@ export default class Main extends Component {
     this.handleMessageChange = this.handleMessageChange.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { other, me, markSeen } = this.props;
+
+    if (!other || !other.messages) {
+      return;
+    }
+
+    const prevMessagesLength = prevProps.other
+      && prevProps.other.messages
+      && prevProps.other.messages.length;
+
+    const messagesLength = other
+      && other.messages
+      && other.messages.length;
+
+    if ((!prevMessagesLength && messagesLength)
+      || (prevMessagesLength < messagesLength)) {
+      this.scrollToLastMessage();
+    }
+
+    other.messages
+      .filter(message => message.receiver === me.id)
+      .filter(message => !message.isSeen)
+      .forEach(message => markSeen(other._id, message._id));
+  }
+
+
   setLastMessageRef(ref) {
     this.lastMessageRef = ref;
 
@@ -43,25 +70,6 @@ export default class Main extends Component {
 
       this.lastMessageRef.scrollIntoView({ behavior: 'smooth' });
     }, 50);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.props.other || !this.props.other.messages) {
-      return;
-    }
-
-    if (prevState.conversation
-      && prevState.conversation.messages
-      && prevState.conversation.messages.length < this.props.other.messages.length) {
-      this.scrollToLastMessage();
-    }
-
-    const { me } = this.props;
-
-    this.props.other.messages
-      .filter(message => message.receiver === me.id)
-      .filter(message => !message.isSeen)
-      .forEach(message => this.props.markSeen(this.props.other._id, message._id));
   }
 
   handleSendMessage(event) {
@@ -86,7 +94,7 @@ export default class Main extends Component {
 
   sendMessage() {
     const { draftMessage } = this.state;
-    const { me, other } = this.props;
+    const { me, other, sendMessage } = this.props;
 
     this.setState(({
       draftMessage: '',
@@ -100,11 +108,16 @@ export default class Main extends Component {
       isPending: true,
     };
 
-    this.props.sendMessage(newMessage);
+    sendMessage(newMessage);
   }
 
   render() {
-    if (!this.props.other || !this.props.other.username) {
+    const {
+      other,
+      me,
+    } = this.props;
+
+    if (!other || !other.username) {
       return (
         <div className="app__main">
           <SelectAUser />
@@ -112,10 +125,17 @@ export default class Main extends Component {
       );
     }
 
-    const { me, other } = this.props;
+    const {
+      username,
+      photoUrl,
+      lastSeen,
+      messages,
+    } = other;
+
+    const { draftMessage } = this.state;
 
     const myAvatar = me.photoUrl;
-    const otherAvatar = other.photoUrl || user;
+    const otherAvatar = photoUrl || user;
 
     return (
       <div className="app__main">
@@ -126,21 +146,21 @@ export default class Main extends Component {
           <Fragment>
             <header className="main__header">
               <div className="main__username">
-                {other.username}
+                {username}
               </div>
               <div className="main__last-seen">
                 Last seen:&nbsp;
-                <TimeAgo>{this.state.lastSeen}</TimeAgo>
-&nbsp;ago
+                <TimeAgo>{lastSeen}</TimeAgo>
+                &nbsp;ago
               </div>
             </header>
             <main className="main__chat">
               <div className="chat__messages">
-                {other.messages
-                  && other.messages.map((message, index) => (
+                {messages
+                  && messages.map((message, index) => (
                     <div
                       key={`${message._id}`}
-                      ref={other.messages.length - 1 === index && this.setLastMessageRef}
+                      ref={messages.length - 1 === index && this.setLastMessageRef}
                       className={classnames(
                         'message',
                         (message.sender === me.id)
@@ -186,7 +206,7 @@ export default class Main extends Component {
                 <i className="fab fa-telegram-plane" onClick={this.sendMessage} />
               </div>
               <textarea
-                value={this.state.draftMessage}
+                value={draftMessage}
                 onChange={this.handleMessageChange}
                 onKeyDown={this.handleSendMessage}
                 className="compose__input"

@@ -51,20 +51,23 @@ export const actionCreators = {
     } = getState();
 
     const messages = [...contact.messages];
-    messages.push(message);
+    const messageIndex = messages.push(message) - 1;
     dispatch(updateContact({ ...contact, messages }));
 
     listen(jwt);
     emit('chat message',
       { body: message.body, receiverId: message.receiver },
       (messageFromServer) => {
+        messages.splice(messageIndex, 1);
+
         /* eslint-disable no-param-reassign */
         delete message.isPending;
         message._id = messageFromServer._id;
         message.receivedAt = messageFromServer.receivedAt;
         /* eslint-enable no-param-reassign */
 
-        dispatch(updateContact({ ...contact, messages: [...messages] }));
+        messages.push(message);
+        dispatch(updateContact({ ...contact, messages }));
       });
   },
   updateUserInfo: data => (dispatch, getState) => {

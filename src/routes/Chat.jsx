@@ -47,7 +47,15 @@ class Chat extends Component {
   }
 
   closeSettings = () => {
-    this.props.history.push('/chat');
+    let url = '/chat';
+
+    const { other, history } = this.props;
+    const { username } = other;
+
+    if (other && username) {
+      url += `/${username}`;
+    }
+    history.push(url);
   }
 
   render() {
