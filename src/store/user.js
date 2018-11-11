@@ -7,7 +7,7 @@ const types = {
 };
 
 const setUser = ({
-  _id: id,
+  _id,
   username,
   welcomeMessage,
   photoUrl,
@@ -15,7 +15,7 @@ const setUser = ({
 }) => ({
   type: types.USER,
   payload: {
-    id, username, welcomeMessage, photoUrl, jwt,
+    _id, username, welcomeMessage, photoUrl, jwt,
   },
 });
 
@@ -104,7 +104,7 @@ if (userFromLocalStorage) {
 }
 
 const initialState = user || {
-  id: null,
+  _id: null,
   username: '',
   welcomeMessage: '',
   photoUrl: '',

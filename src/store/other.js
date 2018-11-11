@@ -1,4 +1,4 @@
-import { getLastSeen } from '../lib/Chat/User';
+import { getLastSeen, listen, emit } from '../lib/Chat/User';
 import CurrentUser from '../lib/Chat/CurrentUser';
 import { updateContact } from './contacts';
 
@@ -13,29 +13,39 @@ export const setOther = ({ username }) => ({
 
 export const unsetOther = () => setOther({});
 
-export const setLastSeen = (userId, lastSeen) => ({
-  type: types.SET_LAST_SEEN,
-  payload: {
-    userId,
-    lastSeen,
-  },
-});
-
-
 export const actionCreators = {
-  listenLastSeen: () => (dispatch, getState) => {
-    const {
-      other: {
-        id: userId,
-      },
-      contacts: {
-        [userId]: contact,
-      },
-    } = getState();
+  listenOtherLastSeen: interval => (dispatch, getState) => setInterval(
+    () => {
+      const {
+        user: {
+          jwt,
+        },
+        other: {
+          username,
+        },
+        contacts,
+      } = getState();
 
-    getLastSeen(userId)
-      .then(lastSeen => dispatch(updateContact({ ...contact, lastSeen })));
-  },
+      if (!username) {
+        return;
+      }
+
+      const contact = Object.values(contacts)
+        .find(c => c.username === username);
+
+      if (!contact) {
+        return;
+      }
+
+      listen(jwt);
+      emit(
+        'getLastSeen',
+        username,
+        lastSeen => dispatch(updateContact({ ...contact, lastSeen })),
+      );
+    },
+    interval,
+  ),
 
   getConversation: username => (dispatch, getState) => {
     const {

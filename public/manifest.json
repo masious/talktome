@@ -3,13 +3,13 @@
   "name": "Talk To Me",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "chat.png",
+      "sizes": "144x144",
+      "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/chat/?utm_source=homescreen",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#3598db",
+  "background_color": "#f5f6f8"
 }

@@ -50,7 +50,7 @@ export default class Main extends Component {
     }
 
     other.messages
-      .filter(message => message.receiver === me.id)
+      .filter(message => message.receiver === me._id)
       .filter(message => !message.isSeen)
       .forEach(message => markSeen(other._id, message._id));
   }
@@ -101,9 +101,9 @@ export default class Main extends Component {
     }));
 
     const newMessage = {
-      _id: Math.floor(Math.random() * 100),
+      _id: Math.floor(Math.random() * 1000),
       body: draftMessage.trim(),
-      sender: me.id,
+      sender: me._id,
       receiver: other._id,
       isPending: true,
     };
@@ -137,6 +137,8 @@ export default class Main extends Component {
     const myAvatar = me.photoUrl;
     const otherAvatar = photoUrl || user;
 
+    const isOnline = (new Date().getTime() - new Date(lastSeen).getTime()) < 15 * 1000;
+
     return (
       <div className="app__main">
         {!other && (
@@ -149,9 +151,17 @@ export default class Main extends Component {
                 {username}
               </div>
               <div className="main__last-seen">
-                Last seen:&nbsp;
-                <TimeAgo>{lastSeen}</TimeAgo>
-                &nbsp;ago
+                {isOnline
+                  ? 'Online'
+                  : (
+                    <span>
+                      Last Seen:&nbsp;
+                      <TimeAgo>
+                        {lastSeen}
+                      </TimeAgo>
+                      &nbsp;ago
+                    </span>
+                  )}
               </div>
             </header>
             <main className="main__chat">
@@ -163,7 +173,7 @@ export default class Main extends Component {
                       ref={messages.length - 1 === index && this.setLastMessageRef}
                       className={classnames(
                         'message',
-                        (message.sender === me.id)
+                        (message.sender === me._id)
                           ? 'message--me'
                           : 'message--other',
                       )}
@@ -171,7 +181,7 @@ export default class Main extends Component {
                       <div className="message__avatar">
                         <img
                           alt=""
-                          src={(message.sender === me.id
+                          src={(message.sender === me._id
                             ? myAvatar
                             : otherAvatar
                           ) || user}
@@ -180,7 +190,7 @@ export default class Main extends Component {
                       <div className="message__body">
                         {message.body}
                         <i className={classnames(
-                          message.sender === me.id
+                          message.sender === me._id
                           && message.isSeen
                           && 'fa fa-check-double',
                           message.isPending && 'far fa-clock',

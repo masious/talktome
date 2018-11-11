@@ -17,9 +17,11 @@ class Chat extends Component {
       me,
       history,
       match,
+      other,
       setOther,
       getConversation,
       listenForMarkedSeen,
+      listenOtherLastSeen,
       listenForNewMessages,
     } = this.props;
 
@@ -35,14 +37,25 @@ class Chat extends Component {
 
     listenForMarkedSeen();
     listenForNewMessages();
+
+    this.lastSeenInterval = listenOtherLastSeen(5000);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { username: newUsername } = nextProps.match.params;
+    const {
+      username: newUsername,
+    } = nextProps.match.params;
 
-    if (newUsername !== this.props.match.params.username && newUsername !== 'settings') {
+    if (newUsername
+      && newUsername !== this.props.match.params.username
+      && newUsername !== 'settings') {
       nextProps.setOther({ username: newUsername });
       nextProps.getConversation(newUsername);
+
+      if (this.lastSeenInterval) {
+        clearInterval(this.lastSeenInterval);
+      }
+      this.lastSeenInterval = this.props.listenOtherLastSeen(5000);
     }
   }
 
@@ -127,6 +140,7 @@ const mapDispatch = dispatch => ({
   setOther: data => dispatch(setOther(data)),
   ...bindActionCreators({
     search: miscActionCreators.search,
+    listenOtherLastSeen: otherActionCreators.listenOtherLastSeen,
     updateUserInfo: userActionCreators.updateUserInfo,
     changeAvatar: userActionCreators.changeAvatar,
     getConversation: otherActionCreators.getConversation,

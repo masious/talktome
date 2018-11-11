@@ -44,14 +44,6 @@ export default class CurrentUser extends User {
     });
   }
 
-  updateUserInfo(data) {
-    return CurrentUser.post('/users/update', data, {
-      headers: {
-        Authorization: `Bearer ${this.data.jwt}`,
-      },
-    });
-  }
-
   static changeAvatar(jwt, file) {
     const formData = new FormData();
     formData.append('avatar', file, 'avatar');

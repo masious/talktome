@@ -8,7 +8,7 @@
   will-change: transform;
   margin: 0 auto;
   left: 50%;
-  bottom: 0;
+  bottom: -1rem;
   width: 300px;
   transform: translateX(-50%);
   z-index: 100;
@@ -19,5 +19,5 @@
 }
 
 .toast--active {
-  transform: translateX(-50%) translateY(-50px);
+  transform: translateX(-50%) translateY(-64px);
 }

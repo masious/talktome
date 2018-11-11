@@ -67,9 +67,9 @@ export const actionCreators = {
     const { jwt } = getState().user;
     listen(jwt);
     addListener('marked seen', (message) => {
-      const { id } = getState().user;
+      const { _id } = getState().user;
 
-      const contactId = message.sender === id
+      const contactId = message.sender === _id
         ? message.receiver
         : message.sender;
 
