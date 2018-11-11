@@ -42,10 +42,10 @@ export function register(config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         // navigator.serviceWorker.ready.then(() => {
-        //   console.log(
-        //     'This web app is being served cache-first by a service '
-        //       + 'worker. To learn more, visit http://bit.ly/CRA-PWA',
-        //   );
+        console.log(
+          'This web app is being served cache-first by a service '
+          + 'worker. To learn more, visit http://bit.ly/CRA-PWA',
+        );
         // });
       } else {
         // Is not localhost. Just register service worker
@@ -70,10 +70,10 @@ function registerValidSW(swUrl, config) {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
               // content until all client tabs are closed.
-              // console.log(
-              //   'New content is available and will be used when all '
-              //     + 'tabs for this page are closed. See http://bit.ly/CRA-PWA.',
-              // );
+              console.log(
+                'New content is available and will be used when all '
+                + 'tabs for this page are closed. See http://bit.ly/CRA-PWA.',
+              );
 
               // Execute callback
               if (config && config.onUpdate) {
@@ -86,8 +86,8 @@ function registerValidSW(swUrl, config) {
         };
       };
     })
-    .catch(() => {
-      // console.error('Error during service worker registration:', error);
+    .catch((error) => {
+      console.error('Error during service worker registration:', error);
     });
 }
 
@@ -113,9 +113,9 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
-      // console.log(
-      //   'No internet connection found. App is running in offline mode.',
-      // );
+      console.log(
+        'No internet connection found. App is running in offline mode.',
+      );
     });
 }
 
